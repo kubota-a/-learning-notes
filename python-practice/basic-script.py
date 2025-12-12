@@ -386,46 +386,107 @@ print("-" * 20)# ----------
 
 # データ構造 =====================================
 
+# 以降はLoopに記載済み
 # ----------------
-# リスト（list）1つの変数の中に複数の値を入れるデータ型
+# リスト（list）1つの変数の中に複数の値を入れるデータ型　「複数の値を扱いたい」
 # 変数[要素1,要素2,要素3…]
 numbers = [1, 2, 3, 4, 5]    # リストを定義
 print(numbers)    # [1, 2, 3, 4, 5]  変数名だけ→全要素を出力
 print(type(numbers))    # <class 'list'>  データ型は「リスト型」
 
 print("-" * 20)# ----------
-# ループの復習
-
-# while文の場合 「単純に処理を繰り返したいとき」※無限ループの危険あり
-i = 0
-while i < 3:    # 条件 iが3より小さい間（＝iが2のときまで+1される）
-    i = i + 1    # 処理内容
-print(i)    # shile分から外れて次の処理　「3」
-
-print("-" * 20)# ----------
-
-x = 0
-for i in range(3):
-    x = i + 1
-print(x)
-
-print("-" * 10)# ----------
-
-x = 0
-for _ in range(3):
-    x += 1
-print(x)
-
-print("-" * 10)# ------
-
-x = 0
-for i in range(3):
-    x = x + 1
-print(x)
-
-for i in range(3):
-    print(i + 1)
-
-print("-" * 20)# ----------
-
 # 数字以外の要素も格納可能
+# 変数languagesに、Python、Java、Golangを入れたリストを作成
+languages = ["Python", "Java", "Golang"]
+print(languages)
+
+# 数字、文字列、bool値など、異なるデータ型の要素も一緒に格納可能
+mix = [1, "Python", True, 33]
+
+# 要素を個別に取り出す
+print(mix[0])    # 1  要素のインデックスを指定する
+print(mix[2])    # True  要素のインデックスを指定する
+
+# 特定の要素をまとめて取り出す
+# mixから1、"Python"。Trueを取り出す
+# 文字列と同じようにスライスを使う
+print(mix[0:2]) # [1, 'Python']　✖　
+print(mix[0:3]) # [1, 'Python', True]　〇　スライスの終わりは終了インデックス+1
+
+# 要素を1つずつ順番に取り出す
+for i in range(len(mix)):    # mixの要素数分の数字が入った袋をrange()で作成
+    print(mix[i])    # 1　Python　True　33　
+# 各ループで該当するインデックスをmix[i]で指定してる
+
+print("-" * 20)# ----------
+# 文字列と同じように直接、要素を1つずつ順番に取り出す
+# for i in mix:
+#     print(mix[i]) 　
+# ✖　ここでのiはインデックスじゃなくて要素そのものだから、mix[i]はNG
+for i in mix:
+    print(i)    # 1　Python　True　33 　〇
+
+print("-" * 20)# ----------
+# 以降、説明等はLoopに記載、ここでは実演のみ
+
+# 変数はインデックス用のi・要素用のvを用意しておく
+for i, v in enumerate(mix):
+    print(i, v)
+print("-" * 20)# ----------
+print(1 in mix)    # True　
+print(22 in mix)    # False
+print("Python" in mix)    # True
+print("Java" in mix)    # False
+
+print("-" * 20)# ----------
+
+mix = [1, "Python", True, 33]
+mix[1] = "Java"
+print(mix)
+
+print("-" * 20)# ----------
+
+num1 = [1, 2, 3, 4, 5]
+num2 = [6, 7, 8, 9, 10]
+
+print(num1 + num2)
+
+print("-" * 20)# ----------
+print(num1 * 2)
+print("-" * 20)# ----------
+
+# 演習5
+num3 = [0]
+print(num3 * 10)
+print("-" * 20)# ----------
+
+nums = [1, 2, 3, 4, 5]
+nums.append(6)    # 要素「6」を追加
+print(nums)    # [1, 2, 3, 4, 5, 6]
+
+# 数字の0～4をforループで回して、各数字を2倍した値をリストに要素として格納したい。
+nums = []
+for i in range(5):
+    nums.append(i * 2)    # numsに要素「i * 2」を追加
+print(nums)    # [0, 2, 4, 6, 8]
+
+num1 = [1, 2, 3, 4, 5]
+num2 = [6, 7, 8, 9, 10]
+
+num1.extend(num1)
+
+print(num1)    # [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]　
+print(num2)    # [6, 7, 8, 9, 10]
+
+print("-" * 20)# ----------
+
+nums = [1, 2, 3, 4, 5, 3]
+
+print(nums)    # [1, 2, 3, 4, 5, 3]
+nums.remove(3)
+print(nums)    # [1, 2, 4, 5, 3]
+print("-" * 20)# ----------
+nums4 = [] 
+for i in range(5):
+    nums4.append(i)
+print(nums4)
