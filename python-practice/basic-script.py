@@ -490,3 +490,17 @@ nums4 = []
 for i in range(5):
     nums4.append(i)
 print(nums4)
+
+print("-" * 20)# ----------
+nums4 = [i for i in range(5)]
+print(nums4)
+print("-" * 20)# ----------
+print("-" * 20)# ----------
+# 変数numbersから10以上30未満の値だけを抽出したリストを、作成したい
+numbers = [20, 58, 19, 4, 29, 31, 5, 1, 39, 13, 30]
+new_numbers = []
+
+for i in numbers:
+    if 10 <= i < 30:    # iが10以上30未満なら
+        new_numbers.append(i)    # new_numbersに要素iを追加する
+print(new_numbers)    # [20, 19, 29, 13]
