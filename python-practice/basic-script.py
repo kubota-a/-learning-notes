@@ -394,7 +394,38 @@ print(numbers)    # [1, 2, 3, 4, 5]  変数名だけ→全要素を出力
 print(type(numbers))    # <class 'list'>  データ型は「リスト型」
 
 print("-" * 20)# ----------
+# ループの復習
+
+# while文の場合 「単純に処理を繰り返したいとき」※無限ループの危険あり
+i = 0
+while i < 3:    # 条件 iが3より小さい間（＝iが2のときまで+1される）
+    i = i + 1    # 処理内容
+print(i)    # shile分から外れて次の処理　「3」
+
+print("-" * 20)# ----------
+
+x = 0
+for i in range(3):
+    x = i + 1
+print(x)
+
+print("-" * 10)# ----------
+
+x = 0
+for _ in range(3):
+    x += 1
+print(x)
+
+print("-" * 10)# ------
+
+x = 0
+for i in range(3):
+    x = x + 1
+print(x)
+
+for i in range(3):
+    print(i + 1)
+
+print("-" * 20)# ----------
 
 # 数字以外の要素も格納可能
-
-
