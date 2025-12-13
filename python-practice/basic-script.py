@@ -551,3 +551,42 @@ print(fruits.values())    # dict_values([100, 120, 150])
 
 for value in fruits.values():
     print(value)
+
+print("-" * 20)# ----------
+
+for key in fruits.keys():
+    print(key, fruits[key])
+
+print("-" * 20)# ----------
+print(fruits.items()) 
+
+for key, value in fruits.items():
+    print(key, value)
+
+print("-" * 20)# ----------
+
+fruits = {"apple": 100, "banana": 120, "peach":150}
+# Valueの取得
+print(fruits["apple"])    # 100　直接Keyを指定して取得
+
+
+# Valueの取得(getメソッド)
+print(fruits.get("apple"))    # 100　直接Keyを指定しなくても取得できる
+print(fruits.get("grape"))    # None 存在しないKeyを入れてもエラーにならない
+
+print("-" * 20)# ----------
+
+fruits = {"apple": 100, "banana": 120, "peach":150}
+print(fruits)  # {'apple': 100, 'banana': 120, 'peach': 150}
+
+fruits2 = {"apple": 100,"banana":100, "grape":250}
+fruits.update(fruits2)    # fruitsをfruits2でアップデートする
+print(fruits)  # {'apple': 100, 'banana': 100, 'peach': 150, 'grape': 250}
+
+fruits = {"apple": 100, "banana": 120, "peach":150}
+fruits.pop("apple")    # Key"apple"を指定して要素を削除
+print(fruits)  # {'banana': 120, 'peach': 150}
+
+fruits = {"apple": 100, "banana": 120, "peach":150}
+del fruits["peach"]    # Key"peach"を指定して要素を削除
+print(fruits)  # {'apple': 100, 'banana': 120}
