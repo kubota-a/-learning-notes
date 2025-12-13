@@ -504,3 +504,50 @@ for i in numbers:
     if 10 <= i < 30:    # iが10以上30未満なら
         new_numbers.append(i)    # new_numbersに要素iを追加する
 print(new_numbers)    # [20, 19, 29, 13]
+
+print("-" * 20)# ----------
+# 内包表記バージョン
+numbers = [20, 58, 19, 4, 29, 31, 5, 1, 39, 13, 30]
+new_numbers = []
+
+new_numbers = [n for n in numbers if 10 <= n < 30]    # [n + for文 + 条件]
+print(new_numbers)    # [20, 19, 29, 13]
+
+print("-" * 20)# ----------
+
+fruits = {"apple": 100, "banana": 120}
+print(fruits, type(fruits))
+
+# Valueの取得
+print(fruits["apple"])    # Keyを指定する　100
+print(fruits["banana"])    # 120
+
+# Valueの変更
+fruits["apple"] = 150
+print(fruits["apple"])    # 150
+
+fruits["peach"] = 180    # 存在しないKeyを指定して値を代入する
+print(fruits)
+
+word2 = ["p", "y", "t"]
+word2[0] = "b"    # []でインデックスを指定して新しい値を代入する
+print(word2)    # ['b', 'y', 't']
+
+
+print("-" * 20)# ----------
+fruits = {"apple": 100, "banana": 120, "peach":150}
+print(fruits)
+
+
+# 辞書にはいっているKeyをすべて取得したい
+print(fruits.keys())    # dict_keys(['apple', 'banana', 'peach'])
+# .keys()の()は空白でOK！引数（外部からの情報提供）がなくても戻り値（辞書内のすべてのKey）を返せるから
+
+# forループを使うと1つずつKeyを取り出せる
+for key in fruits.keys():
+    print(key)
+
+print(fruits.values())    # dict_values([100, 120, 150])
+
+for value in fruits.values():
+    print(value)
