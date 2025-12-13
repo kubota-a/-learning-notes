@@ -590,3 +590,17 @@ print(fruits)  # {'banana': 120, 'peach': 150}
 fruits = {"apple": 100, "banana": 120, "peach":150}
 del fruits["peach"]    # Key"peach"を指定して要素を削除
 print(fruits)  # {'apple': 100, 'banana': 120}
+
+print("-" * 20)# ----------
+# 12/14
+# 組み込み関数
+numbers = [2, 5, 7, 3, 1]
+print(max(numbers))    # 最大値 7
+print(min(numbers))    # 最小値 1
+print(sum(numbers))    # 合計 18
+
+avg = sum(numbers) / len(numbers)    # 平均値 3.6　※平均値を出す関数はない
+print(avg)
+
+# 関数の定義
+
