@@ -613,10 +613,87 @@ print("-" * 20)# ----------
 del avg
 
 # ◎ 何かしらの数値が格納されたリストの平均値を算出する関数
-def calc_average(numbers):    # 関数名の「後ろの()内に変数」（引数）を入れて宣言する
-    avg = sum(numbers) / len(numbers)
-    return avg
+def calc_average(numbers):    # 数値が入ったリスト（引数） numbers を受け取り、平均値を計算する関数を定義する
+    avg = sum(numbers) / len(numbers)    # リスト内の合計値を要素数で割り、平均値を計算して変数 avg に代入する 
+    return avg    # 計算した平均値 avg を、関数の戻り値として呼び出し元に返す
 
-numbers = [2, 5, 7, 3, 1]
-average = calc_average(numbers)    # avgとaverageの関係をGPTにきく！
-print(average)
+numbers = [2, 5, 7, 3, 1]    # 平均値を求めたい数値のリストを定義する
+average = calc_average(numbers)    # 関数を呼び出し、戻り値（平均値）を変数 average に格納する
+print(average)    # 3.6  変数 average に格納された値を出力する
+
+
+del numbers
+print("-" * 20)# ----------
+
+def fizzbuzz_hantei(num):
+
+    if num % 15 == 0:
+        kekka = "FizzBuzz"
+    elif num % 3 == 0:
+        kekka = "Fizz"
+    elif num % 5 == 0:
+        kekka = "Buzz"
+    else :
+        kekka = num
+    return kekka
+
+numbers = [3, 5, 30, 49]
+
+for i in numbers:
+    f_or_B = fizzbuzz_hantei(i)
+    print(f_or_B)
+
+print("-" * 20)# ----------
+
+del numbers
+del f_or_B
+
+print("-" * 20)# ----------
+
+def fizzbuzz_hantei(num):
+
+    if num % 15 == 0:
+        kekka = "FizzBuzz"
+    elif num % 3 == 0:
+        kekka = "Fizz"
+    elif num % 5 == 0:
+        kekka = "Buzz"
+    else :
+        kekka = num
+    return kekka
+
+numbers = [3, 5, 30, 49]
+
+for i in numbers:
+    f_or_B = fizzbuzz_hantei(i)
+    print(f_or_B)
+
+print("-" * 20)# ----------
+
+# 2つの数字を足し算する関数
+def add(a, b):
+    return a + b
+
+result = add(3, 5)
+print(result)    # 8
+
+# 苗字と名前を渡してフルネームを返す関数
+def create_fullneme(last_name, first_name):
+    return last_name + " " + first_name
+
+fullname = create_fullneme("太郎", "佐藤")
+print(fullname)    # 太郎 佐藤　引数の順番を間違えて渡すと、戻り値が意図の通りにならない
+
+# キーワード引数を使うと、引数の順序に関わらず意図した戻り値を返せる
+fullname = create_fullneme(first_name = "太郎", last_name = "佐藤")
+print(fullname)
+
+print("-" * 20)# ----------
+
+
+def greet(name, massage="Hello"):    # 引数が渡されなかった場合、messageは「Hello」にしておきたい（デフォルト引数）
+    print(massage, name, "!")
+
+greet("Alece")    # Hello Alece !　　messageを指定していない場合に自動で「Hello」がついた
+greet("Bob", "Goodbye")    # Goodbye Bob !　　messageを指定した場合は、その通りに出力される
+
