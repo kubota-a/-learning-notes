@@ -697,3 +697,25 @@ def greet(name, massage="Hello"):    # 引数が渡されなかった場合、me
 greet("Alece")    # Hello Alece !　　messageを指定していない場合に自動で「Hello」がついた
 greet("Bob", "Goodbye")    # Goodbye Bob !　　messageを指定した場合は、その通りに出力される
 
+print("-" * 20)# ----------
+# 12/06
+# 例外処理
+
+add_mun = lambda a, b: a + b
+
+try:
+    r = add_mun(1, "2")
+    print(r)
+except TypeError:
+    print("例外処理が発生しました")    # 例外処理が発生しました
+print("例外処理が終わりました")    # 例外処理が終わりました
+
+
+try:
+    r = add_mun(1, 2)
+    print(r)
+except TypeError:
+    print("例外処理が発生しました")    # 3
+print("例外処理が終わりました")    # 例外処理が終わりました
+
+# クラスは現時点では、戦略的に動画視聴のみ！
