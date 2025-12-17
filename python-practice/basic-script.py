@@ -719,3 +719,11 @@ except TypeError:
 print("例外処理が終わりました")    # 例外処理が終わりました
 
 # クラスは現時点では、戦略的に動画視聴のみ！
+
+# 12/17
+# ライブラリ
+# ターミナル（PowerShell）で、「python -m pip install seaborn」を実行してライブラリseabornをインストール
+
+import seaborn
+iris = seaborn.load_dataset("iris")
+seaborn.pairplot(iris)
