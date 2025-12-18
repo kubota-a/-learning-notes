@@ -60,13 +60,40 @@ def count_adults(ages_list):    # リストages_listを受け取る関数count_a
     adult_list = []    # 空のリストadult_listを用意
     for i in range(len(ages_list)):    # リストages_listの要素数分の数字が入った袋をrange()で作成
         if ages_list[i] >= 18:    # もしages_lisの要素iが18以上なら
-            adult_list.append(ages_list[i])    # adult_listにages_lisの要素iを追加する
+            adult_list.append(ages_list[i])    # adult_listにages_lisの要素iを追加する ●またリストの[]を()に書き間違えてエラーが出た
     return len(adult_list)    # 戻り値としてadult_listの要素の数を返す
 
 ages = [12, 18, 25, 9, 30, 15]
 adult_count = count_adults(ages)
 print(adult_count)
 
+del adult_count
+
+# 別解 パターン2：forは外、関数は「判定だけ」
+
+# 問題2
+ages = [12, 18, 25, 9, 30, 15]
+# 要求
+# 「18歳以上の人数」を数えて出力せよ
+# ただし 処理は関数として定義すること
+# 条件
+# 関数名は count_adults
+# 引数としてリストを受け取る　✖この条件だけ無しにする
+# return で人数を返す
+def count_adults(age):    # ageを受け取る関数count_adultsを定義
+    return age >= 18    # age <= 18　の判定結果を返す ●>=を間違えて<=と書いていったん不正解になった。凡ミス注意
+
+ages = [12, 18, 25, 9, 30, 15]
+adult_count = 0    # カウンタ変数adult_countを0で初期化
+for age in ages:    # リストagesの要素をforループで1つずつ取り出す
+    is_adult = count_adults(age)    # is_adultに関数count_adultsの戻り値を格納
+    if is_adult == True:    # もしis_adultの値がTrueなら
+        adult_count += 1    # カウンタ変数adult_countに1ずつ足していく
+print(adult_count)    # カウンタ変数adult_countの値を出力する
+
+# 上記、出力結果が「4」になって不正解！　▶　出力4って何を数えてる？
+        
+    
 
 
 
