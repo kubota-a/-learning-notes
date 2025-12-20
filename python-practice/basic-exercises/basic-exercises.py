@@ -70,3 +70,20 @@ for i in scores:
      if i >= 70:
           pass_list.append(i)
 print(pass_list)
+
+print("-" * 15)    # ----------------
+
+# 12/20
+# Loopのまとめノートの目次だけ見ながら、0時までにできるだけ内容を思い出してみるの巻！
+
+# 文字列　インデックスとスライス
+text = "Python"
+print(text[2])     # t
+print("n" in text)    # True
+print(text[2:5])    # tho 終わりのインデックスは+1になる
+
+# 後ろからインデックス指定したスライス ✖間違えた
+ # 出力したいのは「tho」
+print(text[-2:-4])    # 空白 ✖
+print(text[-4:-1])    # tho　〇　
+# スライスは、前からでも後ろからでもインデックス番号が「小さいほうからスタート」して+1のインデックスで終わる！
