@@ -43,3 +43,11 @@ for i in range(1, 31):
     if i % 3 == 0:
         mlp_of_3[f'{len(mlp_of_3)+1}番目'] = i    # 「現在の辞書mlp_of_3の長さに1を足し合わせた」番目
 print(f'作成した辞書：{mlp_of_3}')
+
+# 模範解答
+mlp_of_3 = {}
+for i in range(1, 31):
+    if i % 3 == 0:
+        index = f'{i // 3}番目'    # 「iを3で割った数」番目　3の倍数なので、これで'1番目'、'2番目'、'3番目'…となる
+        mlp_of_3[index] = i    
+print(f'作成した辞書：{mlp_of_3}')
