@@ -1,12 +1,7 @@
-
-
-# もっとスマートなコード　get関数を使うと、条件分岐を書く必要がなくなって4行が1行にできる！
-w = input("文字を入力してください > ")
-w_dict = {}
-for i in w:
-    w_dict[i] = w_dict.get(i, 0) + 1
-print(w_dict)
-
-
-
-
+# 別解　新たな文字列を作らずに、もとの文字列からダイレクトに母音を削除する方法
+word = input("文字列を入力してください > ")
+vowel_list = ["a", "i", "u", "e", "o"]
+for w in vowel_list:    # 母音の入ったリストvowel_listをループの対象とする
+    word = word.replace(w, "")
+    print(word)
+print(f'作成した文字列 : {word}')
