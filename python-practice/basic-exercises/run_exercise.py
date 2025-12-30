@@ -1,26 +1,7 @@
-# セクション5　リスト型
-# 問題26
-# リスト`[1, 2, 3, 4, 5]`に格納されている数値を足し合わせるプログラムを作成してください。
-# ※組み込み関数を使わずに解いてみてください。
-# ```
-# リスト内の合計 : 15
-# ```
-
-# 設計メモ
-# ※forループでリストの要素を1つずつ取り出して、前回計算した分と足し合わせていくことにする
-# ```
-# [1, 2, 3, 4, 5]を要素とするリストnum_listを宣言
-# 変数resultを0で初期化して宣言
-# for文でnum_listの要素を1つずつ取り出し、変数iに格納
-# resultに、「result+i」を格納しなおす
-# ループを抜けた後、「リスト内の合計 : 」とresultをprintで出力
-
-num_list = [1, 2, 3, 4, 5]
-result = 0
-for i in num_list:
-    result += i
-print(f'リスト内の合計 : {result}')
-
-
-
-
+l = [1, 5, 3, 2, 4]
+l_int = [int(i) for i in l]
+max_num = l_int[0]
+for num in l_int:
+    if num > max_num:
+        max_num = num
+print(f'リスト内の最大値 : {max_num}')
