@@ -1,10 +1,37 @@
-# 解答2：重複する文字を各1つだけ拾うバージョン　→　str_1 = "banana"・str_2 = "an"なら出力が「an」になる
-common_chars = ""
-str_1 = input("1つ目の文字列を入力してください > ")
-str_2 = input("2つ目の文字列を入力してください > ")
-for i in str_1:
-    if i in str_2 and i not in common_chars:    # iがstr_2に含まれる、かつ、common_charsには含まれない場合、
-        common_chars += i
-    elif i in str_2 and i in common_chars:    # iがstr_2に含まれる、かつ、common_charsにも含まれる場合、
-        continue
-print(f'重複する文字列 : {common_chars}')
+# 問題25
+# 入力した3つの英単語を、カンマ区切りでアルファベット順になるように並び替えるプログラムを作成してください。
+# ```
+# 1つ目の英単語を入力してください > Python
+# 2つ目の英単語を入力してください > Ruby
+# 3つ目の英単語を入力してください > Java
+# 並び替えた英単語 : Java, Python, Ruby
+# ```
+
+# 設計メモ
+# ※出力結果はリストではないけど、いったんリスト化したほうが並べ替えしやすそう
+# ※検索したところ、リストをアルファベット順に並べ替えるにはsort()メソッドが使える
+# ※検索したところ、「リストをカンマ+半角スペース」区切りの文字列に変換するにはjoin()メソッドが使える
+# ```
+# inputで「1つ目の英単語を入力してください > 」、受け取った文字列を変数word_1に格納
+# inputで「2つ目の英単語を入力してください > 」、受け取った文字列を変数word_2に格納
+# inputで「3つ目の英単語を入力してください > 」、受け取った文字列を変数word_3に格納
+# word_1、word_2、word_3を格納したリストword_listを宣言
+# word_listをsort()メソッドでアルファベット順に並べ替えたものをword_listに格納しなおす
+# word_listをjoin()メソッドで「カンマ+半角スペース」区切りの文字列に変換し、変数word_strに格納
+# 「並び替えた英単語 : 」とword_strをprintで出力
+
+# 再チャレンジ
+word_1 = input("1つ目の英単語を入力してください > ")
+word_2 = input("2つ目の英単語を入力してください > ")
+word_3 = input("3つ目の英単語を入力してください > ")
+word_list = [word_1, word_2, word_3]
+word_list = sorted(word_list)    # sort()メソッドではなくsorted()関数を使ってアルファベット順に並べ替えたリストを受け取り、word_listに格納しなおす
+word_str = ", ".join(word_list) 
+print(f'並び替えた英単語 : {word_str}')    # Java, Python, Ruby　正解
+
+# もっとスマートなコード　入力が増えても対応できるように…
+
+
+
+
+
