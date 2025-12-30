@@ -89,12 +89,65 @@ word_list = sorted(word_list)    # sort()メソッドではなくsorted()関数�
 word_str = ", ".join(word_list) 
 print(f'並び替えた英単語 : {word_str}')    # Java, Python, Ruby　正解
 
+# もっとスマートなコード　入力が増えても対応できるように…
+# ```
+# 設計メモ
+# 空のリストword_listを宣言
+# for文のrange()を3回まわし、取り出した数をiに格納
+# input()の、"「i+1」つ目の英単語を入力してください > "で受け取った英単語をword_listに要素として追加する
+# ループが終わったら、word_listをsorted()関数でアルファベット順に並べ替えたものをword_listに格納しなおす
+# word_listをjoin()メソッドで「カンマ+半角スペース」区切りの文字列に変換し、変数word_strに格納
+# 「並び替えた英単語 : 」とword_strをprintで出力
 
+word_list = []
+for i in range(3):
+    word_list.append(input(f'{i + 1}つ目の英単語を入力してください > '))
+word_list = sorted(word_list)
+word_str = ", ".join(word_list)
+print(f'並び替えた英単語 : {word_str}')    # Java, Python, Ruby　正解
 
+# sort()メソッドのコード1（私の解答：不正解）
+word_list = []
+for i in range(3):
+    word_list.append(input(f'{i + 1}つ目の英単語を入力してください > '))
+word_list = word_list.sort()    # 「word_list = 」でリストをsort()の戻り値で上書きするとNoneになってしまう
+print(word_list)    # この行は実験用　None
+word_str = ", ".join(word_list)    # TypeError: can only join an iterable
+print(f'並び替えた英単語 : {word_str}')    
 
+# sort()メソッドのコード2（模範解答）
+word_list = []
+for i in range(3):
+    word_list.append(input(f'{i + 1}つ目の英単語を入力してください > '))
+word_list.sort()    # リストをsort()の戻り値で上書きせず、並び替えただけにする
+print(word_list)    # この行は実験用　['Java', 'Python', 'Ruby']
+word_str = ", ".join(word_list)    # エラーなし
+print(f'並び替えた英単語 : {word_str}')    # 並び替えた英単語 : Java, Python, Ruby　●正解
 
 print("-" * 20)# ----------
+print("-" * 20)# ----------
+# セクション5　リスト型
 # 問題26
+# リスト`[1, 2, 3, 4, 5]`に格納されている数値を足し合わせるプログラムを作成してください。
+# ※組み込み関数を使わずに解いてみてください。
+# ```
+# リスト内の合計 : 15
+# ```
+
+# 設計メモ
+# ※forループでリストの要素を1つずつ取り出して、前回計算した分と足し合わせていくことにする
+# ```
+# [1, 2, 3, 4, 5]を要素とするリストnum_listを宣言
+# 変数resultを0で初期化して宣言
+# for文でnum_listの要素を1つずつ取り出し、変数iに格納
+# resultに、「result+i」を格納しなおす
+# ループを抜けた後、「リスト内の合計 : 」とresultをprintで出力
+
+num_list = [1, 2, 3, 4, 5]
+result = 0
+for i in num_list:
+    result += i
+print(f'リスト内の合計 : {result}')
 
 print("-" * 20)# ----------
 # 問題27
