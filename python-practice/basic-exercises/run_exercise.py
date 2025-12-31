@@ -1,19 +1,31 @@
-
-
-# 再チャレンジ
+# 問題19　△
 # 設計メモ
-# ※min()関数の戻り値は最小値そのものだから、最後にwords_listの文字列を出力させようとしても無理だった
-# ※なのでとりあえず関数なしで解いてみる
+# ※英単語から母音a, i, u, e, oを取り除くには、ループで英単語をまわして、あらかじめリスト化しておいた母音リストの中に含まれているか否かを判定
 # ```
-# ['Python', 'Ruby', 'PHP', 'JavaScript']を要素とするリストwords_listを宣言
-# 1番短い単語をとりあえず先頭の要素であると仮定するため、変数shortest_wordにwords_listのインデックス0に該当する要素を格納
-# for文で、words_listから「インデックス0以外の要素」を1つずつ取り出して変数wに格納する
-# もしwの文字列の長さが、shortest_wordの文字列の長さよりも短い場合は、shortest_wordをwで更新する
-# ループ終了後、「一番短い単語 : 」とshortest_wordをprintで出力
+# input()関数で「文字列を入力してください > 」、受け取った文字列を変数wordsに格納
+# a, i, u, e, oを要素とするリスト vowel_list を宣言
+# 空のリストnew_wordを宣言
+# for文でwordsの文字を1つずつ取り出し、変数wに格納
+# もし、wがvowel_listに含まれないなら、new_wordにwを要素として追加
+# ループ終了後、join()メソッドでnew_wordを文字列に変換し、それを変数new_word_strに格納
+# 「作成した文字列 : 」とnew_word_strをprintで出力
 
-words_list = ['Python', 'Ruby', 'PHP', 'JavaScript']
-shortest_word = words_list[0]
-for w in words_list[1:]:
-    if len(w) < len(shortest_word):
-        shortest_word = w
-print(f'一番短い単語 : {shortest_word}')
+words = input("文字列を入力してください > ")
+vowel_list = ["a", "i", "u", "e", "o"]
+new_word = []
+for w in words:
+    if w not in vowel_list:
+        new_word.append(w)
+new_word_str = "".join(new_word)
+print(f'作成した文字列 : {new_word_str}')
+
+print("-" * 20)# ----------
+# 模範解答
+words = input("文字列を入力してください > ")
+vowel_list = ["a", "i", "u", "e", "o"]
+new_word = ""
+for w in words:
+    if w in vowel_list:
+        continue
+    new_word += w
+print(f'作成した文字列 : {new_word}')

@@ -79,14 +79,108 @@ print(f'一番短い単語 : {shortest_word}')
 
 print("-" * 20)# ----------
 # 復習！
-# 今日の復習は、文字型：問題16～25まで。
+# 今日の復習は、文字型：問題16～25まで。問題文は割愛
+print("-" * 20)# ----------
+# 問題16　◎
+# 設計メモ
+# ※len()を使わずに文字列の長さを出力　→　forループで文字列を回して1周終わったときのカウンタ変数を出力
+# ```
+# input()関数で「文字を入力してください > 」、受け取った文字列を変数wordに格納
+# カウンタ変数countを0で初期化して宣言
+# for文で、wordの文字列を1文字ずつ取り出して_（以降は使わない変数のため）に格納
+# countを、「count+1」に更新
+# ループ終了後、「Pythonの文字数 : 」とcountをprintで出力
 
+word = input("文字を入力してください > ")
+count = 0
+for _ in word:
+    count += 1
+print(f'{word}の文字数 : {count}')
 
 print("-" * 20)# ----------
-# 問題32
+# 問題17　◎
+# 設計メモ
+# ※最初の文字はインデックス0、最後の文字はインデックス-1
+# ```
+# input()関数で「文字を入力してください > 」、受け取った文字列を変数sに格納
+# 「sの最初の文字 : 」とsのインデックス0の文字をprintで出力
+# 「sの最後の文字 : 」とsのインデックス-1の文字をprintで出力
+
+s = input("文字を入力してください > ")
+print(f'{s}の最初の文字 : {s[0]}')
+print(f'{s}の最後の文字 : {s[-1]}')
 
 print("-" * 20)# ----------
-# 問題33
+# 問題18　△
+# 設計メモ
+# ※文字列の出現頻度　出力結果が辞書　→　文字列をループさせて1つずつ「空の辞書に存在するKeyであるか」を判定し、
+# ※真ならすでに存在するKeyのValueを+1して更新
+# ※その他の場合は新たにKeyとValue（1）を要素として追加する感じで実装
+# ```
+# input()関数で「文字を入力してください > 」、受け取った文字列を変数wordに格納
+# 空の辞書word_dictを宣言
+# for文で、wordの文字列を1つずつ取り出し、変数wに格納
+# もし、wがword_dictの中にKeyとして存在するなら、word_dictのKey「w」に該当するValueに+1をして更新
+# その他の場合は、新たに「w」をKeyとして、「1」をValueとしてword_dictの要素を追加
+# word_dictをprintで出力
+
+word = input("文字を入力してください > ")
+word_dict = {}
+for w in word:
+    if w in word_dict:
+        word_dict[w] += 1
+    else:
+        word_dict[w] = 1
+print(word_dict)
 
 print("-" * 20)# ----------
-# 問題34
+# 問題19　△
+# 設計メモ
+# ※英単語から母音a, i, u, e, oを取り除くには、ループで英単語をまわして、あらかじめリスト化しておいた母音リストの中に含まれているか否かを判定
+# ```
+# input()関数で「文字列を入力してください > 」、受け取った文字列を変数wordsに格納
+# a, i, u, e, oを要素とするリストvowel_listを宣言
+# 空のリストnew_wordを宣言
+# for文でwordsの文字を1つずつ取り出し、変数wに格納
+# もし、wがvowel_listに含まれないなら、new_wordにwを要素として追加
+# ループ終了後、join()メソッドでnew_wordを文字列に変換し、それを変数new_word_strに格納
+# 「作成した文字列 : 」とnew_word_strをprintで出力
+
+words = input("文字列を入力してください > ")
+vowel_list = ["a", "i", "u", "e", "o"]
+new_word = []
+for w in words:
+    if w not in vowel_list:
+        new_word.append(w)
+new_word_str = "".join(new_word)
+print(f'作成した文字列 : {new_word_str}')
+
+print("-" * 20)# ----------
+# 模範解答
+words = input("文字列を入力してください > ")
+vowel_list = ["a", "i", "u", "e", "o"]
+new_word = ""    # 空の文字列　文字列は足し算、掛け算可能だからわざわざリストにしなくてよい！忘れてた！
+for w in words:
+    if w in vowel_list:
+        continue
+    new_word += w
+print(f'作成した文字列 : {new_word}')
+
+print("-" * 20)# ----------
+# 問題20
+
+print("-" * 20)# ----------
+# 問題21
+
+print("-" * 20)# ----------
+# 問題22
+
+print("-" * 20)# ----------
+# 問題23
+
+print("-" * 20)# ----------
+# 問題24
+
+print("-" * 20)# ----------
+# 問題25
+
