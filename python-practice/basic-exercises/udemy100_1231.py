@@ -134,7 +134,7 @@ for w in word:
 print(word_dict)
 
 print("-" * 20)# ----------
-# 問題19　△
+# 問題19　△　別解×
 # 設計メモ
 # ※英単語から母音a, i, u, e, oを取り除くには、ループで英単語をまわして、あらかじめリスト化しておいた母音リストの中に含まれているか否かを判定
 # ```
@@ -167,13 +167,67 @@ for w in words:
 print(f'作成した文字列 : {new_word}')
 
 print("-" * 20)# ----------
+# 別解　※replace()を使う
+# input()関数で「文字列を入力してください > 」、受け取った文字列を変数wordsに格納
+# a, i, u, e, oを要素とするリスト vowel_list を宣言
+# for文でvowel_listの文字を1つずつ取り出し、変数vに格納
+# wordsの中に含まれるvを、replace()で空白に置換し、new_wordに格納
+# ループ終了後、「作成した文字列 : 」とnew_wordをprintで出力
+
+words = input("文字列を入力してください > ")
+vowel_list = ["a", "i", "u", "e", "o"]
+for v in vowel_list:
+    new_word = words.replace(v, "")
+print(f'作成した文字列 : {new_word}')
+
+print("-" * 20)# ----------
 # 問題20
+# 設計メモ
+# ※すべての文字列を大文字に変換するには、upper()メソッドが使える
+# ```
+# input()関数で「英単語を入力してください > 」、受け取った文字列を変数wordsに格納
+# 「変換後の文字列 : 」と、upper()メソッドで大文字化したwordsをprintで出力
+
+words = input("英単語を入力してください > ")
+print(f'変換後の文字列 : {words.upper()}')
 
 print("-" * 20)# ----------
-# 問題21
+# 問題21　✖
+# 設計メモ
+# ※文字列(1文字でも)を大文字に変換するには、upper()メソッドが使える
+# ※文字が小文字であるかの判定は、islower()メソッドが使える
+# ```
+# input()関数で「文字列を入力してください > 」、受け取った文字列を変数 words に格納
+# もし、wordsのインデックス0に該当する文字が小文字の場合、upper()メソッドで大文字化してwordsに格納しなおす
+# その他の場合は、wordsを「wordsの二乗」で更新
+# 「変換後の文字列 : 」と、wordsをprintで出力
+
+words = input("文字列を入力してください > ")
+if words[0].islower():
+    words = words[0].upper() + words[1:]    # 「+ words[1:]」を書かずに出力が「P」だけに
+else:
+    words = words * 2    # 「words ** 2」と書いてTypeErrorに。文字列の乗算はNG。掛け算なら可能
+print(f'変換後の文字列 : {words}')
 
 print("-" * 20)# ----------
-# 問題22
+# 問題22　✖
+# 設計メモ
+# ※2つ目の文字列をforループまわし、1つ目の文字列に含まれるかを判定
+# ```
+# input()関数で「1つ目の文字列を入力してください > 」、受け取った文字列を変数words_1に格納
+# input()関数で「2つ目の文字列を入力してください > 」、受け取った文字列を変数words_2に格納 
+# 空の文字列duplicate_charsを宣言
+# for文でwords_2をまわして1文字ずつ取り出し、変数wに格納
+# もしwがwords_1に含まれる、かつ、duplicate_charsに含まれない場合は、duplicate_charsを「duplicate_chars+w」で更新
+# ループ終了後、「重複する文字列 : 」とduplicate_charsをprintで出力
+
+words_1 = input("1つ目の文字列を入力してください > ")
+words_2 = input("2つ目の文字列を入力してください > ")
+duplicate_chars = ""
+for w in words_2:
+    if w in words_1 and w not in duplicate_chars:    # andの後ろを「not in duplicate_chars:」だけで「w」を忘れてSyntaxError
+        duplicate_chars += w
+print(f'重複する文字列 : {duplicate_chars}')
 
 print("-" * 20)# ----------
 # 問題23
