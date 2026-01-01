@@ -43,7 +43,7 @@ else:
 print(f'変換した英単語 : {result}')
 
 print("-" * 20)# ----------
-# 問題25
+# 問題25　△　データ増加対応別解　×
 # 設計メモ
 # ※文字列をアルファベット順に並べ替える　sortメソッド（元データが壊れる）かsorted関数（元データ保持）。今回はsortで行く
 # ※sortメソッドはリストのメソッドなので、文字列をいったんリストに変換し、出力前に文字列に戻す
@@ -85,3 +85,98 @@ for i in range(3):
 word_list.sort()
 words = ", ".join(word_list)
 print(f'並び替えた英単語 : {words}')
+
+print("-" * 20)# ----------
+# 復習終わり
+
+# 問題32
+# リスト`['Python', 'Ruby', 'PHP', 'JavaScript']`に格納されている文字列が短いものから順番に並べるプログラムを作成してください。
+# ```
+# 短い順に並び替えたリスト : ['PHP', 'Ruby', 'Python', 'JavaScript']
+# ```
+
+# 設計メモ
+# ['Python', 'Ruby', 'PHP', 'JavaScript']を要素とするwordsを宣言
+# 空のリストnew_wordsを宣言
+# wordsの要素の中で1番短い文字列を先頭の要素であると仮定するため、変数m_wordに wordsのインデックス0に該当する要素を格納
+# 下記のforループを、wordsの要素の数だけ繰り返す
+# ↓
+# for文でwordsの要素を1つずつ取り出し、変数wに格納
+# もしwの文字列の長さが、m_wordの文字列の長さよりも短い場合は、m_wordをwに更新する
+# ループ終了後、
+# m_wordをnew_wordsに格納
+# m_wordのインデックスを取得し、delでwordsから削除
+# ↓
+# 上記のforループをwordsの要素の数だけ繰り返し終わったら、
+# 「短い順に並び替えたリスト : 」とnew_wordsをprintで出力
+
+words = ['Python', 'Ruby', 'PHP', 'JavaScript']
+new_words = []
+m_word = words[0]    # これ、ここじゃない！
+
+for _ in range(len(words)):
+    m_word = words[0]    # 当初はこの1文がなくて、下記の2回目のループの「del words[words.index(m_word)]」でValueErrorが出た！
+    for w in words:
+        if len(w) < len(m_word):
+            m_word = w
+    new_words.append(m_word)
+    del words[words.index(m_word)]
+print(f'短い順に並び替えたリスト : {new_words}')
+
+# 模範解答
+words = ['Python', 'Ruby', 'PHP', 'JavaScript']
+new_words = sorted(words, key=len)
+print(f'短い順に並び替えたリスト : {new_words}')
+
+
+print("-" * 20)# ----------
+# 問題33
+# 2つのリストで共通の文字列を格納したリストを出力するプログラムを作成してください。
+# ※使用するリスト :
+# ```
+# l1 = ['Python', 'Ruby', 'PHP', 'JavaScript']
+# l2 = ['Java', 'Ruby', 'Golang', 'Python', 'TypeScript']
+# ```
+# ▼期待する出力
+# ```
+# 共通する値を格納したリスト : ['Python', 'Ruby']
+# ```
+
+# 設計メモ
+# ※l1をforループでまわして、要素1つずつl2に含まれているかを判定していくことにする
+# ```
+# 2つのリスト、l1とl2を宣言
+# 空のリストduplicate_wordsを宣言
+# for文でl1の要素を1つずつ取り出し、変数wに格納
+# wがl2に含まれていて、かつ、wがduplicate_wordsに含まれない場合は、wを要素としてduplicate_wordsに追加
+# ループ終了後、「共通する値を格納したリスト : 」とduplicate_wordsをprintで出力
+
+l1 = ['Python', 'Ruby', 'PHP', 'JavaScript']
+l2 = ['Java', 'Ruby', 'Golang', 'Python', 'TypeScript']
+duplicate_words =[]
+for w in l1:
+    if w in l2 and w not in duplicate_words:
+        duplicate_words.append(w)
+print(f'共通する値を格納したリスト : {duplicate_words}')
+
+# 上記をリスト内包表記で
+l1 = ['Python', 'Ruby', 'PHP', 'JavaScript']
+l2 = ['Java', 'Ruby', 'Golang', 'Python', 'TypeScript']
+duplicate_words =[w for w in l1 if w in l2 and w not in duplicate_words]
+# duplicate_words =[w for w in l1 if w in l2 and w not in duplicate_words]　はNG！内包表記では作成中のリストは登場できない。こうしたいなら1つ目の解答。
+
+# 模範解答
+l1 = ['Python', 'Ruby', 'PHP', 'JavaScript']
+l2 = ['Java', 'Ruby', 'Golang', 'Python', 'TypeScript']
+duplicate_words =[]
+for w1 in l1:
+    for w2 in l2:
+        if w1 == w2 and w1 not in duplicate_words:
+            duplicate_words.append(w1)
+print(f'共通する値を格納したリスト : {duplicate_words}')
+
+print("-" * 20)# ----------
+# 問題34
+
+print("-" * 20)# ----------
+# 問題35
