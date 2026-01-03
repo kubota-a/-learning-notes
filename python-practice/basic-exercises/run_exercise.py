@@ -6,37 +6,6 @@
 
 
 
-# 再チャレンジ
-# l1 = [1 ,2 ,3, 4, 5]と、
-# l2 = [10, 9, 8, 7, 6]を宣言
-# 空のリストresultを宣言
-# for文、enumerateでl1のインデックス番号と要素を1つずつ取り出し、それぞれ変数iと変数vに格納
-# resultに、「l1のインデックス番号iに該当する要素」と「l2のインデックス番号iに該当する要素」を掛け算した値を追加
-# 「掛け算を計算した結果 : 」とresultをprintで出力
-
-l1 = [1 ,2 ,3, 4, 5]
-l2 = [10, 9, 8, 7, 6]
-result = []
-for i, v in enumerate(l1):
-    result.append(l1[i] * l2[i])
-print(f'掛け算を計算した結果 : {result}')
-
-# ていうか、変数v使ってない（インデックス番号しか使ってない）からrange()でいいじゃん！
-l1 = [1 ,2 ,3, 4, 5]
-l2 = [10, 9, 8, 7, 6]
-result = []
-for i in range(len(l1)):
-    result.append(l1[i] * l2[i])
-print(f'掛け算を計算した結果 : {result}')
-
-# 上記だと4行超えるので、リスト内包表記バージョン
-l1 = [1 ,2 ,3, 4, 5]
-l2 = [10, 9, 8, 7, 6]
-result = [l1[i] * l2[i] for i in range(len(l1))]
-print(f'掛け算を計算した結果 : {result}')
-
-# 模範解答　zip　✛　リスト内包表記
-l1 = [1 ,2 ,3, 4, 5]
-l2 = [10, 9, 8, 7, 6]
-result = [a * b for a, b in zip(l1, l2)]
-print(f'掛け算を計算した結果 : {result}')
+i = 1.5
+int(i)
+print(int(i), i)
