@@ -4,21 +4,6 @@
 # ['1', 2, '3', 4, '5', 6, '7', 8, '9', 10]を要素とするリストlを宣言
 # ループ終了後、「重複する文字列 : 」と　　　をprintで出力
 
-# 問題46
-# 以下のリストで文字列”Python”が含まれている要素を削除するプログラムを作成してください。
-# ※使用するリスト : 
-# ```
-# l = ['Python1', 'Java1', 1, 'Python2', 'Java2', 2]
-# ```
-# ▼期待する出力
-# ```
-# 文字列"Python"を削除したリスト : ['Java1', 1, 'Java2', 2]
-# ```
-
-
-# 模範解答　やっぱり新しいリストを作成したらだめだった　removeを使う
-l = ['Python1', 'Java1', 1, 'Python2', 'Java2', 2]
-for i in l:
-    if 'Python' in str(i):
-        l.remove(i)
-print(f'文字列"Python"を削除したリスト : {l}')
+telephone_numbers = ['080-1203-4455', '090-9372-9682', '090-3080-4982', '080-3917-5918']
+new_telephone_numbers = [n for n in telephone_numbers if n.startswith("080")]
+print(f'080で始まる電話番号 : {new_telephone_numbers}')
