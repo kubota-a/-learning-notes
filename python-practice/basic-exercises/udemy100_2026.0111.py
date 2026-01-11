@@ -39,6 +39,16 @@ print("-" * 20)# ----------
 # Aに対応するValue : 111
 # ```
 
+# 設計メモ
+# Keyが存在しないときにエラーではなく`None`を出力する　→　getメソッド
+# lをforループでまわして、対応するdのValueをgetメソッドで取得する
+
+d = {'A': 111, 'B': 222, 'C': 333}
+l = ['B', 'C', 'D', 'A']
+for k in l:
+    v = d.get(k)
+    print(f'{k}に対応するValue : {v}')
+
 print("-" * 20)# ----------
 # 問題73
 # 以下の辞書を、Keyでソートするプログラムを作成してください。
@@ -51,6 +61,12 @@ print("-" * 20)# ----------
 # Keyでソートした辞書 : {'A': 111, 'B': 222, 'C': 333, 'D': 444}
 # ```
 
+# 設計メモ
+# 辞書を、Keyでソート　→  「new_d = sorted(d)」では出力結果はValueが消えたリスト['A', 'B', 'C', 'D']になってしまう。
+d = {'B': 222, 'A': 111, 'D': 444, 'C': 333}
+sort_by_key = dict(sorted(d.items()))    # 「sorted(d.items())」だけだと、出力は[('A', 111), ('B', 222), ('C', 333), ('D', 444)]でリストになる
+print(f'Keyでソートした辞書 : {sort_by_key}')    # Keyでソートした辞書 : {'A': 111, 'B': 222, 'C': 333, 'D': 444}
+
 print("-" * 20)# ----------
 # 問題77
 # 以下の辞書に格納されているValueの、最大値を出力するプログラムを作成してください。
@@ -62,3 +78,33 @@ print("-" * 20)# ----------
 # ```
 # 辞書に格納されているValueの最大値 : 444
 # ```
+
+# 設計メモ
+# 最終的な出力はValueだけでOKなので、items()は不要。get()にする。
+# ```
+# dを宣言
+# とりあえず「Valueの最大値をdの先頭の要素のValueと仮定」するための変数max_valueを宣言
+# for文でdの要素を1つずつ取り出し、変数iに格納
+# もしiのValueがmax_valueより大きければ、max_valueをvに更新
+# ループ終了後、「辞書に格納されているValueの最大値 : 」とmax_valueをprintで出力
+
+d = {'B': 222, 'A': 111, 'D': 444, 'C': 333}
+max_value = d.get('B')
+for i in d:    # for文で辞書を回すとKeyの値だけ1つずつ出てくる
+    if d.get(i) > max_value:
+        max_value = d.get(i)
+print(f'辞書に格納されているValueの最大値 : {max_value}')
+
+# もっとスマートなコード　getを何回も呼ばない！
+d = {'B': 222, 'A': 111, 'D': 444, 'C': 333}
+max_value = d.get('B')
+for i in d:
+    v = d.get(i)
+    if v > max_value:
+        max_value = v
+print(f'辞書に格納されているValueの最大値 : {max_value}')
+
+# 模範解答　Valuesメソッドを使用して全Valueを取得するバージョン
+d = {'B': 222, 'A': 111, 'D': 444, 'C': 333}
+max_value = max(d.values())    # valuesで取得したすべてのValueの中での最大値
+print(f'辞書に格納されているValueの最大値 : {max_value}')    # 辞書に格納されているValueの最大値 : 444
