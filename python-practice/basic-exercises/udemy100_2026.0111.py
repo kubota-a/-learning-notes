@@ -98,11 +98,11 @@ print(f'辞書に格納されているValueの最大値 : {max_value}')
 # もっとスマートなコード　getを何回も呼ばない！
 d = {'B': 222, 'A': 111, 'D': 444, 'C': 333}
 max_value = d.get('B')
-for i in d:
+for i in d:    # for文で辞書を回すとKeyの値だけ1つずつ出てくる
     v = d.get(i)
     if v > max_value:
         max_value = v
-print(f'辞書に格納されているValueの最大値 : {max_value}')
+print(f'辞書に格納されているValueの最大値 : {max_value}')    # 辞書に格納されているValueの最大値 : 444
 
 # 模範解答　Valuesメソッドを使用して全Valueを取得するバージョン
 d = {'B': 222, 'A': 111, 'D': 444, 'C': 333}
