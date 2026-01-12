@@ -4,7 +4,9 @@
 # ['1', 2, '3', 4, '5', 6, '7', 8, '9', 10]を要素とするリストlを宣言
 # ループ終了後、「重複する文字列 : 」と　　　をprintで出力
 
-# 模範解答　Valuesメソッドを使用して全Valueを取得するバージョン
-d = {'B': 222, 'A': 111, 'D': 444, 'C': 333}
-max_value = max(d.values())
-print(f'辞書に格納されているValueの最大値 : {max_value}')
+target = {}
+
+if target == {}:
+    print("空の辞書です")
+else:
+    print(target)
