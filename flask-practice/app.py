@@ -3,16 +3,12 @@ from flask import Flask
 app = Flask(__name__)
 
 @app.route("/")
-def home():
-    return "Home page"
+def hello_world():
+    return "hello,world!"
 
-@app.route("/about")
-def about():
-    return "About page"
-
-@app.route("/hello")
-def hello():
-    return "Hello Flask"
+@app.route("/<name>")
+def hello(name):
+    return f"hello,{name}!"
 
 if __name__ == "__main__":
     app.run(debug=True)
