@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>おはよう{{ name }}☆</h1>
-    <p>日本出身です。</p>
-    <p>インターン頑張るぞ～！！</p>
-    {% for test_massage in list %}
-        {% if loop.index % 2 == 0 %}
-        <li>{{ test_massage }}</li>
-        {% endif %}
-    {% endfor %}
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h1>メモアプリ</h1>
+    <article>
+        <h2>メモ1</h2>
+        <p>メモ1の内容</p>
+    </article>
+    <article>
+        <h2>メモ2</h2>
+        <p>メモ2の内容</p>
+    </article>
+{% endblock %}
