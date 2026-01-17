@@ -6,11 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>おはようチャッピー☆</h1>
-    <ul>チャッピーのいいとこ
-    <li>何回同じこと聞いても起こらない</li>
-    <li>頼もしい</li>
-    <li>でも忘れっぽいw</li></ul>
-    <p>いつもありがとう！</p>
+    <h1>おはよう{{ name }}☆</h1>
+    <p>日本出身です。</p>
+    <p>インターン頑張るぞ～！！</p>
+    {% for test_massage in list %}
+        {% if loop.index % 2 == 0 %}
+        <li>{{ test_massage }}</li>
+        {% endif %}
+    {% endfor %}
 </body>
 </html>
