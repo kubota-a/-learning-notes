@@ -25,16 +25,14 @@ class Memo(db.Model):
     title = db.Column(db.Text, nullable=False)
     body = db.Column(db.Text, nullable=False)
 
+# =========================================
+# ルート
+# =========================================
 
-
-memo_list = [
-    {'title': "test01", 'body': "チャッピーです。"},
-    {'title': "test02", 'body': "GPTです。"}
-]
-
-
+# トップページのルート
 @app.route("/")
 def top():
+    memo_list = Memo.query.order_by(Memo.id.desc()).all()
     return render_template('index.html', memo_list=memo_list)
 
 if __name__ == "__main__":
