@@ -25,23 +25,20 @@ class Memo(db.Model):
     title = db.Column(db.Text, nullable=False)
     body = db.Column(db.Text, nullable=False)
 
-# =========================================
-# ルート
-# =========================================
 
-# トップページのルート
-@app.route("/")
+# ルーティング定義
+
+# トップページ
+@app.route("/")    # トップページにアクセスされたら下の関数が動く
 def top():
     memo_list = Memo.query.order_by(Memo.id.desc()).all()
-    return render_template('index.html', memo_list=memo_list)
+    # メモのテーブル(モデル)のDBからデータを取得する準備、idの降順(新しい順)に並べる、全件取得。それをmemo_listに格納
+    return render_template('index.html', memo_list=memo_list)    # memo_listを'index.html'に渡して表示させる
 
-# 新規登録画面のルート
-@app.route("/regist", methods = ['GET', 'POST'])
+# 新規登録画面
+@app.route("/regist", methods = ['GET', 'POST'])    # 新規登録画面にアクセスされたら下の関数が動く。GETでもPOSTでも下の関数で処理する。
 def regist():
     return render_template('regist.html')
-
-    
-
 
 
 if __name__ == "__main__":
