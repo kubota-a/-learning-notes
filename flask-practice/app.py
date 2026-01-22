@@ -35,5 +35,14 @@ def top():
     memo_list = Memo.query.order_by(Memo.id.desc()).all()
     return render_template('index.html', memo_list=memo_list)
 
+# 新規登録画面のルート
+@app.route("/regist", methods = ['GET', 'POST'])
+def regist():
+    return render_template('regist.html')
+
+    
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
