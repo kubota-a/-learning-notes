@@ -5,9 +5,9 @@ import os  # ファイルパスの扱いに便利
 
 app = Flask(__name__)
 
-# =========================================
+
 # データベース
-# =========================================
+
 # プロジェクトフォルダ内にDBを作る設定
 basedir = os.path.abspath(os.path.dirname(__file__))    # ベースディレクトリ設定
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "app.db")    # SQLAlchemyの設定
@@ -17,13 +17,13 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False    # パフォーマンス�
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# DBモデルを定義
-class Memo(db.Model):
-    __tablename__ = "memo"
+# DBモデルを定義　「memoというテーブルを、Pythonのクラスとして表現します。」
+class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブルと対応します」
+    __tablename__ = "memo"    # 実際のDB上のテーブル名をmemoに指定
 
-    id = db.Column(db.Integer, primary_key=True)    # DBテーブルにid列を設置
-    title = db.Column(db.Text, nullable=False)    # DBテーブルにtitle列を設置
-    body = db.Column(db.Text, nullable=False)    # DBテーブルにbody列を設置
+    id = db.Column(db.Integer, primary_key=True)    # 「memoテーブルには、整数型のid列があり、主キーです」
+    title = db.Column(db.Text, nullable=False)    # 「memoテーブルには、長めの文字列でnull禁止（必須項目）のtitle列があります」
+    body = db.Column(db.Text, nullable=False)    # 「memoテーブルには、長めの文字列でnull禁止（必須項目）のbody列があります」
 
 
 # ルーティング定義
@@ -45,7 +45,8 @@ def regist():
 
         # SQLAlchemyでCreate
         memo = Memo(title=title, body=body)
-        db.session.add(memo)    # 上記のデータを保存候補に入れる（まだDBに書きこまれてない）
+        # Memoモデルのtitleカラムに、Python変数titleの値を入れる・bodyも同様(左：DBのカラム、右：フォームから取得した値を入れた変数)
+        db.session.add(memo)    # 上記を保存候補に入れる（まだDBに書きこまれてない）
         db.session.commit()    # 保存候補になっていた処理を確定する（DBに書き込みされる）
 
         # 一覧へ（PRGパターン）
