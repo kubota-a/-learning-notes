@@ -38,6 +38,7 @@ def top():
 # 新規登録画面　トップ画面の「新規登録ボタン」からアクセス
 @app.route("/regist", methods = ['GET', 'POST'])    # 新規登録画面にアクセスされたら下の関数が動く。GETでもPOSTでも下の関数で処理する。
 def regist():
+    # POST（Create処理）
     if request.method == 'POST':    # 今来たリクエストがPOST（登録ボタンが押された）なら、下記の処理を行う
         # フォームから値を取得
         title = request.form.get('title')    # フォームからPOSTされたデータ（request.form）から、name="title" の値を取得して変数titlreに格納
@@ -46,7 +47,7 @@ def regist():
         # SQLAlchemyでCreate
         memo = Memo(title=title, body=body)
         # Memoモデルのtitleカラムに、Python変数titleの値を入れる・bodyも同様(左：DBのカラム、右：フォームから取得した値を入れた変数)
-        db.session.add(memo)    # 上記を保存候補に入れる（まだDBに書きこまれてない）
+        db.session.add(memo)    # 上記を保存候補に入れる（新規登録の場合必ずaddが必要。まだDBに書きこまれてない）
         db.session.commit()    # 保存候補になっていた処理を確定する（DBに書き込みされる）
 
         # 一覧へ（PRGパターン）
@@ -59,10 +60,21 @@ def regist():
 @app.route("/<id>/edit", methods = ['GET', 'POST'])    # <int:id>にすると自動でintに変換される。「id」はURLパラメータ（どのデータかを指定するための情報）
 def edit(id):    # URLパラメータが引数。ここで「どのメモを編集するか」が決まる
 
-    # GET　CRUDはRead。URLでIDを受け取る→DBからその1件を取得→初期値入りのフォームを表示
+    # URLでIDを受け取る→DBからその1件を取得→初期値入りのフォームを表示（GET/POST共通） 
     memo = Memo.query.get(id)    # memoテーブルから主キーがidのレコードを1件取得し、「memo」というオブジェクトとして返す
     if memo is None:    # memoが空だったら=URLに存在しないIDが来たら
         abort(404)    # エラー画面を返す
+
+    # POST（Update処理）
+    if request.method == 'POST':
+        # Memoクラスから作成したインスタンスmemoのtitleカラムの値を、フォームからPOSTされたname="title" の値（更新したい内容）に書き換える。bodyも同様
+        memo.title = request.form.get('title')
+        memo.body = request.form.get('body')
+
+        db.session.commit()    # 上記の処理を確定する（）DBに書き込まれる　※すでにDBに存在していたオブジェクトを取得した場合、add()しなくても自動で管理対象になる
+        return redirect('/')    # 更新が終わったら、トップ画面に戻す（GET）
+    
+    # GET（画面を最初に開いたとき）だった場合は編集画面の表示のみ
     return render_template("edit.html", memo=memo)    # 取得したmemoをテンプレートに渡して編集画面を返す
 
 
