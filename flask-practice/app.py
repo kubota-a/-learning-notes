@@ -35,7 +35,7 @@ def top():
     # メモのテーブル(モデル)のDBからデータを取得する準備、idの降順(新しい順)に並べる、全件取得。それをmemo_listに格納
     return render_template('index.html', memo_list=memo_list)    # memo_listを'index.html'に渡して表示させる
 
-# 新規登録画面
+# 新規登録画面　トップ画面の「新規登録ボタン」からアクセス
 @app.route("/regist", methods = ['GET', 'POST'])    # 新規登録画面にアクセスされたら下の関数が動く。GETでもPOSTでも下の関数で処理する。
 def regist():
     if request.method == 'POST':    # 今来たリクエストがPOST（登録ボタンが押された）なら、下記の処理を行う
@@ -54,6 +54,16 @@ def regist():
     
     # GET（画面を最初に開いたとき）だった場合は画面表示のみ
     return render_template('regist.html')
+
+# 編集画面　トップ画面の「編集ボタン」からアクセス。
+@app.route("/<id>/edit", methods = ['GET', 'POST'])    # <int:id>にすると自動でintに変換される。「id」はURLパラメータ（どのデータかを指定するための情報）
+def edit(id):    # URLパラメータが引数。ここで「どのメモを編集するか」が決まる
+
+    # GET　CRUDはRead。URLでIDを受け取る→DBからその1件を取得→初期値入りのフォームを表示
+    memo = Memo.query.get(id)    # memoテーブルから主キーがidのレコードを1件取得し、「memo」というオブジェクトとして返す
+    if memo is None:    # memoが空だったら=URLに存在しないIDが来たら
+        abort(404)    # エラー画面を返す
+    return render_template("edit.html", memo=memo)    # 取得したmemoをテンプレートに渡して編集画面を返す
 
 
 if __name__ == "__main__":
