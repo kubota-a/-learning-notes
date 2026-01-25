@@ -9,7 +9,7 @@
             <tr>
                 <th>タイトル</th>  <!-- 「タイトル」ヘッダーセル -->
                 <th>メモ</th>  <!-- 「メモ」ヘッダーセル -->
-                <th></th>  <!-- 空のヘッダーセル -->
+                <th></th>  <!-- 空のヘッダーセル（編集ボタン・削除ボタン用） -->
             </tr>
             {% for memo in memo_list %}
                 <tr>
@@ -17,6 +17,7 @@
                     <td>{{memo.body}}</td>  <!-- 個別のメモ -->
                     <td>
                         <a href="/{{memo.id}}/edit" role="button">編集</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
+                        <a href="/{{memo.id}}/delete" role="button">削除</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
                     </td>
                 </tr>
             {% endfor %}
