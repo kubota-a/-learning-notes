@@ -65,7 +65,7 @@ def edit(id):    # URLパラメータが引数。ここで「どのメモを編�
     if memo is None:    # memoが空だったら=URLに存在しないIDが来たら
         abort(404)    # エラー画面を返す
 
-    # POST（Update処理）
+    # POST（編集ボタンの押下）
     if request.method == 'POST':
         # Memoクラスから作成したインスタンスmemoのtitleカラムの値を、フォームからPOSTされた"title" という名前の値（メモの新しいタイトル）に書き換える。bodyも同様
         memo.title = request.form.get('title')
@@ -86,12 +86,9 @@ def delete(id):    # URLパラメータが引数。ここで「どのメモを�
     if memo is None:    # memoが空だったら=URLに存在しないIDが来たら
         abort(404)    # エラー画面を返す
 
-    # POST（Update処理）
+    # POST（削除ボタンの押下）
     if request.method == 'POST':
-        # Memoクラスから作成したインスタンスmemoのtitleカラムの値を、フォームからPOSTされた"title" という名前の値（メモの新しいタイトル）に書き換える。bodyも同様
-        memo.title = request.form.get('title')
-        memo.body = request.form.get('body')
-
+        db.session.delete(memo)    # 対象のレコード（オブジェクトmemo）を削除する
         db.session.commit()    # 上記の処理を確定する（）DBに書き込まれる　※すでにDBに存在していたオブジェクトを取得した場合、add()しなくても自動で管理対象になる
         return redirect('/')    # 更新が終わったら、トップ画面に戻す（GET）
     
