@@ -12,6 +12,7 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
+
 # =========================================
 # Flaskアプリ本体
 # =========================================
@@ -34,21 +35,24 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # =========================================
-# Flask-Login 設定（ログイン管理）
+# ■Flask-Login 設定（ログイン管理）
 # =========================================
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# 未ログインで @login_required に入ったとき、ここに飛ばす（後で /login を作る）
+# 未ログインで @login_required に入ったとき、"login"に飛ばす
 login_manager.login_view = "login"
 
-# 任意：メッセージ（日本語にしたいならここ）
-# login_manager.login_message = "ログインが必要です。"
-# login_manager.login_message_category = "warning"
+# flask-login のエラーメッセージ設定　@login_required を付けたページにユーザーがログインなしでアクセスした場合
+# login_manager.login_message = "ログインが必要です。"    # 表示メッセージ
+# login_manager.login_message_category = "warning"    # flashの色（warning/info/errorなど）
+
 
 # =========================================
 # DBモデル
 # =========================================
+
+# ■ユーザー
 class User(UserMixin, db.Model):
     __tablename__ = "user"
 
@@ -76,7 +80,7 @@ def load_user(user_id: str):
     return User.query.get(int(user_id))
 
 
-# memoモデルを定義　「memoというテーブルを、Pythonのクラスとして表現します。」
+# メモ　「memoというテーブルを、Pythonのクラスとして表現します。」
 class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブルと対応します」
     __tablename__ = "memo"    # 実際のDB上のテーブル名をmemoに指定
 
@@ -84,9 +88,14 @@ class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブ�
     title = db.Column(db.Text, nullable=False)    # 「memoテーブルには、長めの文字列でnull禁止（必須項目）のtitle列があります」
     body = db.Column(db.Text, nullable=False)    # 「memoテーブルには、長めの文字列でnull禁止（必須項目）のbody列があります」
 
+    # デバッグ、Flaskシェル、ログ出力した際に、「Memo 3」のようにIDを表示して認識しやすくするため
+    def __repr__(self) -> str:
+        return f"<Memo {self.id}>"
 
-# ルーティング定義
 
+# =========================================
+# ルーティング（メモCRUD）
+# =========================================
 # トップページ
 @app.route("/")    # トップページにアクセスされたら下の関数が動く
 def top():
