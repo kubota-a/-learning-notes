@@ -1,13 +1,29 @@
-from flask import Flask, render_template, request, redirect, abort
+from flask import Flask, render_template, request, redirect, abort, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import os  # ファイルパスの扱いに便利
+from flask_login import (
+    LoginManager,
+    UserMixin,
+    login_user,
+    logout_user,
+    login_required,
+    current_user,
+)
+from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
+# =========================================
+# Flaskアプリ本体
+# =========================================
 app = Flask(__name__)
 
+# ■セッション/flash/flask-loginに必要（本番では必ず環境変数で設定）
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
-# データベース
 
+# =========================================
+# データベース設定（SQLAlchemy / Migrate）
+# =========================================
 # プロジェクトフォルダ内にDBを作る設定
 basedir = os.path.abspath(os.path.dirname(__file__))    # ベースディレクトリ設定
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "app.db")    # SQLAlchemyの設定
@@ -17,7 +33,50 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False    # パフォーマンス�
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# DBモデルを定義　「memoというテーブルを、Pythonのクラスとして表現します。」
+# =========================================
+# Flask-Login 設定（ログイン管理）
+# =========================================
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# 未ログインで @login_required に入ったとき、ここに飛ばす（後で /login を作る）
+login_manager.login_view = "login"
+
+# 任意：メッセージ（日本語にしたいならここ）
+# login_manager.login_message = "ログインが必要です。"
+# login_manager.login_message_category = "warning"
+
+# =========================================
+# DBモデル
+# =========================================
+class User(UserMixin, db.Model):
+    __tablename__ = "user"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    # Udemyのフォーム名が userid なので合わせる（name="userid"）
+    userid = db.Column(db.String(80), unique=True, nullable=False)
+
+    # パスワードは平文で保存しない（ハッシュ化して保存）
+    password_hash = db.Column(db.String(255), nullable=False)
+
+    def set_password(self, password: str) -> None:
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        return check_password_hash(self.password_hash, password)
+
+    def __repr__(self) -> str:
+        return f"<User {self.userid}>"
+
+
+@login_manager.user_loader
+def load_user(user_id: str):
+    # flask-login から渡ってくる user_id は文字列なので int にして検索
+    return User.query.get(int(user_id))
+
+
+# memoモデルを定義　「memoというテーブルを、Pythonのクラスとして表現します。」
 class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブルと対応します」
     __tablename__ = "memo"    # 実際のDB上のテーブル名をmemoに指定
 
