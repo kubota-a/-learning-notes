@@ -9,7 +9,7 @@ from flask_login import (
     login_required,
     current_user,
 )
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash    # Flaskの下地になっているwerkzeug（ワークツォイク）ライブラリの関数をインポート
 import os
 
 
@@ -52,29 +52,32 @@ login_manager.login_view = "login"
 # DBモデル
 # =========================================
 
-# ■ユーザー
-class User(UserMixin, db.Model):
-    __tablename__ = "user"
+# ■ユーザー　「userというテーブルを、Pythonのクラスとして表現します」
+class User(UserMixin, db.Model):    # このUserというクラスは、DBのテーブルと対応します
+    __tablename__ = "user"    # 実際のDB上のテーブル名をuserに指定
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)    # 整数型で主キーのカラム
+    userid = db.Column(db.String(80), unique=True, nullable=False)    # 80文字以内の文字列型で、値の重複を許さない、null禁止（必須項目）
+    password_hash = db.Column(db.String(255), nullable=False)    # 255文字以内の文字列型で、null禁止（必須項目）※平文で保存せずハッシュ化
 
-    # Udemyのフォーム名が userid なので合わせる（name="userid"）
-    userid = db.Column(db.String(80), unique=True, nullable=False)
-
-    # パスワードは平文で保存しない（ハッシュ化して保存）
-    password_hash = db.Column(db.String(255), nullable=False)
-
+    # パスワードをハッシュ化するメソッド　signup（ユーザー作成）のときに使用
+    # Userクラスのメソッドset_passwordを定義。引数はUserインスタンス自身、パスワード（文字列型）。戻り値の型ヒント（アノテーション）：戻り値なし（noneを返す）
     def set_password(self, password: str) -> None:
+        # ツール関数generate_password_hashに、ユーザーが入力した平文のパスワードを渡してハッシュ化した文字列をself.password_hash（DBカラム）に保存する
         self.password_hash = generate_password_hash(password)
 
+    # パスワードを照合するメソッド　login（ログイン）のときに使用
+    # Userクラスのメソッドcheck_passwordを定義。引数はUserインスタンス自身、パスワード（文字列型）。戻り値の型ヒント：bool型
     def check_password(self, password: str) -> bool:
+        # ツール関数check_password_hashに、DBに保存されているハッシュ化されたパスワードと、ユーザーが入力した平文のパスワードを渡して照合した結果を返す（true/false）
         return check_password_hash(self.password_hash, password)
 
+    # デバッグ、Flaskシェル、ログ出力した際に、オブジェクトを「User 3」のように短くわかりやすく表すための関数
     def __repr__(self) -> str:
         return f"<User {self.userid}>"
 
-
-@login_manager.user_loader
+# 「ログイン状態（セッション）から、今ログイン中のUserを復元する仕組み」を登録
+@login_manager.user_loader    # デコレータ（関数に役割を付ける）：下記の関数を、flask-loginが「ユーザーIDからUserを取り出す係」として使用する
 def load_user(user_id: str):
     # flask-login から渡ってくる user_id は文字列なので int にして検索
     return User.query.get(int(user_id))
@@ -88,7 +91,7 @@ class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブ�
     title = db.Column(db.Text, nullable=False)    # 「memoテーブルには、長めの文字列でnull禁止（必須項目）のtitle列があります」
     body = db.Column(db.Text, nullable=False)    # 「memoテーブルには、長めの文字列でnull禁止（必須項目）のbody列があります」
 
-    # デバッグ、Flaskシェル、ログ出力した際に、「Memo 3」のようにIDを表示して認識しやすくするため
+    # デバッグ、Flaskシェル、ログ出力した際に、オブジェクトを「Memo 3」のように短くわかりやすく表すための関数
     def __repr__(self) -> str:
         return f"<Memo {self.id}>"
 
