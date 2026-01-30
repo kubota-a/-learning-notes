@@ -60,7 +60,7 @@ class User(UserMixin, db.Model):    # このUserというクラスは、DBのテ
     userid = db.Column(db.String(80), unique=True, nullable=False)    # 80文字以内の文字列型で、値の重複を許さない、null禁止（必須項目）
     password_hash = db.Column(db.String(255), nullable=False)    # 255文字以内の文字列型で、null禁止（必須項目）※平文で保存せずハッシュ化
 
-    # パスワードをハッシュ化するメソッド　signup（ユーザー作成）のときに使用
+    # Userクラス専用の、パスワードをハッシュ化するメソッド　signup（ユーザー作成）のときに使用
     # Userクラスのメソッドset_passwordを定義。引数はUserインスタンス自身、パスワード（文字列型）。戻り値の型ヒント（アノテーション）：戻り値なし（noneを返す）
     def set_password(self, password: str) -> None:
         # ツール関数generate_password_hashに、ユーザーが入力した平文のパスワードを渡してハッシュ化した文字列をself.password_hash（DBカラム）に保存する
@@ -77,10 +77,10 @@ class User(UserMixin, db.Model):    # このUserというクラスは、DBのテ
         return f"<User {self.userid}>"
 
 # 「ログイン状態（セッション）から、今ログイン中のUserを復元する仕組み」を登録
-@login_manager.user_loader    # デコレータ（関数に役割を付ける）：下記の関数を、flask-loginが「ユーザーIDからUserを取り出す係」として使用する
-def load_user(user_id: str):
-    # flask-login から渡ってくる user_id は文字列なので int にして検索
-    return User.query.get(int(user_id))
+@login_manager.user_loader    # デコレータ（関数に役割を付ける）：下記の関数を、flask-loginが「ユーザーIDから今ログイン中のユーザーを復元する係」として使用する
+def load_user(user_id: str):    # 上記で「user_loader係」として任命された関数load_userを定義。引数はflask-login から渡されるuser_id（文字列型）
+    # user_id →　flask-loginはログイン状態を記憶するとき、内部でユーザーのID（主キー）だけを保存する。辻にリクエストが来たとき、保存してたIDをここに渡してくる
+    return User.query.get(int(user_id))    # Userテーブルからint型にキャストしたuser_idを検索し、Userインスタンスを取得。そのインスタンスを戻り値として返す
 
 
 # メモ　「memoというテーブルを、Pythonのクラスとして表現します。」
@@ -169,9 +169,36 @@ def delete(id):    # URLパラメータが引数。ここで「どのメモを�
 # =========================================
 # 認証（サインアップ / ログイン / ログアウト）
 # =========================================
-# サインアップ
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
+# ユーザー登録画面
+@app.route("/signup", methods=["GET", "POST"])    # ユーザー登録画面にアクセスされたら下記の関数が動く。リクエストはGETとPOSTどちらも受け付ける
+def signup():    # signup関数を定義
+    if request.method == "POST":    # もしリクエストがPOSTだった場合（フォームの「登録」ボタンが押されたとき）は下記の処理を行う
+        # ローカル変数useridに、フォームからPOSTされた"userid"（name属性の辞書キー）に対応する値を取得し、strip()で値の前後の余計なものを削除した状態で格納
+        userid = request.form.get("userid", "").strip()    # get("userid", "")の""は、空欄でエラーを出すためのデフォルト値。"userid"というキーがフォームに存在しない場合は空文字を返す
+        # ローカル変数passwordに、フォームからPOSTされた"password"（name属性の辞書キー）に対応する値を取得して格納
+        password = request.form.get("password", "")    # "password"というキーがフォームに存在しない場合はデフォルト値である空文字を返す
+
+            # 入力チェック（最低限）
+        if not userid or not password:
+            flash("ユーザーIDとパスワードを入力してください。", "error")
+            return redirect(url_for("signup"))
+
+        # 既存チェック
+        existing = User.query.filter_by(userid=userid).first()
+        if existing:
+            flash("そのユーザーIDはすでに使われています。", "error")
+            return redirect(url_for("signup"))
+
+        # ユーザー作成
+        user = User(userid=userid)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+
+        flash("ユーザー登録が完了しました。ログインしてください。", "success")
+        return redirect(url_for("login"))
+
+    # GET（画面を最初に開いたときだった場合はユーザー登録画面の表示のみ）
     return render_template("signup.html")
 
 
