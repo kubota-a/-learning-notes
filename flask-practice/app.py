@@ -174,6 +174,7 @@ def delete(id):    # URLパラメータが引数。ここで「どのメモを�
 def signup():    # signup関数を定義
     if request.method == "POST":    # もしリクエストがPOSTだった場合（フォームの「登録」ボタンが押されたとき）は下記の処理を行う
         # ローカル変数useridに、フォームからPOSTされた"userid"（name属性の辞書キー）に対応する値を取得し、strip()で値の前後の余計なものを削除した状態で格納
+        # strip()は、後の入力チェックで「空白だけでユーザーID登録」されてしまうのを防ぐのに大事！
         userid = request.form.get("userid", "").strip()    # get("userid", "")の""は、空欄でエラーを出すためのデフォルト値。"userid"というキーがフォームに存在しない場合は空文字を返す
         # ローカル変数passwordに、フォームからPOSTされた"password"（name属性の辞書キー）に対応する値を取得して格納
         password = request.form.get("password", "")    # "password"というキーがフォームに存在しない場合はデフォルト値である空文字を返す
