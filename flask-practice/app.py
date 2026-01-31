@@ -122,7 +122,7 @@ def regist():
         db.session.commit()    # 保存候補になっていた処理を確定する（DBに書き込みされる）
 
         # 一覧へ（PRGパターン）
-        return redirect("/")    # 登録が終わったら、トップページに戻す（GET）    
+        return redirect(url_for("top"))    # 登録が終わったら、トップページに戻す（GET）    
     
     # GET（画面を最初に開いたとき）だった場合は画面表示のみ
     return render_template('regist.html')
@@ -143,7 +143,7 @@ def edit(id):    # URLパラメータが引数。ここで「どのメモを編�
         memo.body = request.form.get('body')
 
         db.session.commit()    # 上記の処理を確定する（）DBに書き込まれる　※すでにDBに存在していたオブジェクトを取得した場合、add()しなくても自動で管理対象になる
-        return redirect('/')    # 更新が終わったら、トップ画面に戻す（GET）
+        return redirect(url_for("top"))    # 更新が終わったら、トップ画面に戻す（GET）
     
     # GET（画面を最初に開いたとき）だった場合は編集画面の表示のみ
     return render_template("edit.html", memo=memo)    # 取得したmemoをテンプレートに渡して編集画面を返す
@@ -161,7 +161,7 @@ def delete(id):    # URLパラメータが引数。ここで「どのメモを�
     if request.method == 'POST':
         db.session.delete(memo)    # 対象のレコード（オブジェクトmemo）を削除する
         db.session.commit()    # 上記の処理を確定する（）DBに書き込まれる　※すでにDBに存在していたオブジェクトを取得した場合、add()しなくても自動で管理対象になる
-        return redirect('/')    # 更新が終わったら、トップ画面に戻す（GET）
+        return redirect(url_for("top"))    # 更新が終わったら、トップ画面に戻す（GET）
     
     # GET（画面を最初に開いたとき）だった場合は編集画面の表示のみ
     return render_template("delete.html", memo=memo)    # 取得したmemoをテンプレートに渡して削除画面を返す
@@ -175,14 +175,22 @@ def signup():    # signup関数を定義
     if request.method == "POST":    # もしリクエストがPOSTだった場合（フォームの「登録」ボタンが押されたとき）は下記の処理を行う
         # ローカル変数useridに、フォームからPOSTされた"userid"（name属性の辞書キー）に対応する値を取得し、strip()で値の前後の余計なものを削除した状態で格納
         # strip()は、後の入力チェックで「空白だけでユーザーID登録」されてしまうのを防ぐのに大事！
-        userid = request.form.get("userid", "").strip()    # get("userid", "")の""は、空欄でエラーを出すためのデフォルト値。"userid"というキーがフォームに存在しない場合は空文字を返す
-        # ローカル変数passwordに、フォームからPOSTされた"password"（name属性の辞書キー）に対応する値を取得して格納
-        password = request.form.get("password", "")    # "password"というキーがフォームに存在しない場合はデフォルト値である空文字を返す
+        userid = request.form.get("userid", "").strip()    # get("userid", "")の""はデフォルト値。"userid"というキーがフォームに存在しない場合は空文字を返す
+        # ローカル変数password_rawに、フォームからPOSTされた"password"（name属性の辞書キー）に対応する値を取得して格納
+        # ユーザーが意図してパスワードに含めた空白スペースを削除してしまわないように、パスワードでは通常strip()は使わない
+        password_raw = request.form.get("password", "")    # "password"というキーがフォームに存在しない場合はデフォルト値である空文字を返す
 
-            # 入力チェック（最低限）
-        if not userid or not password:
-            flash("ユーザーIDとパスワードを入力してください。", "error")
-            return redirect(url_for("signup"))
+        # 入力チェック（最低限）
+        # if not userid　＝　useridの値が「ちゃんと入ってない」なら　→　空文字や空リストやNoneはFalse（偽）扱いになるからこう書く
+        # if userid　＝　useridの値が「ちゃんと入っている」なら　→　ちゃんとそれっぽい値が入っているならTrue（真）扱いになるからこう書く
+        # ▼ もしuseridの値が「ちゃんと入ってない」、または、password_rawsの値をstrip()した結果が「ちゃんと入ってない」場合は、
+        if not userid or not password_raw.strip():    
+            flash("ユーザーIDとパスワードを入力してください。", "error")    # 当該flashメッセージ（カテゴリ：error）をセッションに入れる
+            # ※セッションに入れた（予約した）メッセージは、base.html の get_flashed_messages()が拾って画面に表示させる
+            return redirect(url_for("signup"))    # signup関数に紐づいたURL（ユーザー登録画面）にリダイレクトする
+
+        # ここから先は「ユーザーが入力したパスワードそのもの」を使う（空白を含むパスワードも許可）
+        password = password_raw
 
         # 既存チェック
         existing = User.query.filter_by(userid=userid).first()

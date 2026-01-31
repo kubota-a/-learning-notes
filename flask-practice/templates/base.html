@@ -7,7 +7,7 @@
 </head>
 <!-- フラッシュメッセージ app.pyでflash()されたメッセージを、HTML上で表示するための仕組み。Jinjaのテンプレート処理-->
 <body>
- <!-- Flask関数get_flashed_messages()で、「app.pyがflash()されたメッセージ（メッセージのカテゴリを含む）をまとめて」変数messages（メッセージのリスト）に格納 -->  
+ <!-- Flask関数get_flashed_messages()で、「app.pyでflash()されたメッセージ（メッセージのカテゴリを含む）をまとめて」変数messages（メッセージのリスト）に格納 -->  
   {% with messages = get_flashed_messages(with_categories=true) %}<!-- with→{% with %} ~ {% endwith %}の中だけで使えるローカル変数を作るためのjinja文法 -->
     {% if messages %}   <!-- もし変数messagesの中にメッセージが1つでもあるなら、（messagesが空リストなら下記の処理はしない） -->
       <ul>
@@ -19,10 +19,8 @@
     {% endif %}
   {% endwith %}
 
-  {% block content %}{% endblock %}
-</body>
-<body>
-    {% block content %}
-    {% endblock %}
+  {% block content %}
+  <!-- ここに子テンプレートの内容が入る -->
+  {% endblock %}
 </body>
 </html>

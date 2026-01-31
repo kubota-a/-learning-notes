@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>メモアプリ</h1>
-    <a href="/regist" role="button">新規登録</a>
+    <a href="{{ url_for('regist') }}" role="button">新規登録</a>
     {% if memo_list == [] %}
         <p>メモは登録されていません</p>
     {% else %}
@@ -16,8 +16,8 @@
                     <td>{{memo.title}}</td>  <!-- 個別のタイトル -->
                     <td>{{memo.body}}</td>  <!-- 個別のメモ -->
                     <td>
-                        <a href="/{{memo.id}}/edit" role="button">編集</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
-                        <a href="/{{memo.id}}/delete" role="button">削除</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
+                        <a href="{{ url_for('edit', id=memo.id) }}" role="button">編集</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
+                        <a href="{{ url_for('delete', id=memo.id) }}" role="button">削除</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
                     </td>
                 </tr>
             {% endfor %}
