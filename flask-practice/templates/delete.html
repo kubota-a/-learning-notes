@@ -2,7 +2,7 @@
 {% block content %}
 <h1>削除</h1>
 <p>以下のメモを削除しますか？</p>
-<form method="POST">  <!-- ■　"submit"とセット。 -->
+<form method="POST" action="{{ url_for('delete', id=memo.id) }}">  <!-- ■　"submit"とセット。「関数deleteに紐づいていてURLパラメータがmemo.id」のURLに送信 -->
     <table border="1">
         <tr>
             <th>タイトル</th>

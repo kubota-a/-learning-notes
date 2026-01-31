@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>新規登録</h1>
-<form method="POST">  <!-- ■　"submit"とセット。 -->
+<form method="POST" action="{{ url_for('regist') }}">  <!-- ■　"submit"とセット。「関数registに紐づいているURL」に送信されるフォーム -->
     <table border="1">
         <tr>
             <th>タイトル</th>

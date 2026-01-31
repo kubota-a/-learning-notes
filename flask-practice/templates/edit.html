@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>編集</h1>
-<form method="POST">  <!-- ■　"submit"とセット。 -->
+<form method="POST" action="{{ url_for('edit', id=memo.id) }}">  <!-- ■　"submit"とセット。「edit関数に紐づいていてURLパラメータがmemo.idなURL」に送信する -->
     <table border="1">
         <tr>
             <th>タイトル</th>
