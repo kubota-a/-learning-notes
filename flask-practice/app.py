@@ -116,10 +116,10 @@ def regist():
         body = request.form.get('body')
 
         # SQLAlchemyでCreate
-        memo = Memo(title=title, body=body)
-        # Memoモデルのtitleカラムに、Python変数titleの値を入れて「memo」というMemoインスタンスを作る・bodyも同様(左：DBのカラム、右：フォームから取得した値を入れたPython変数)
-        db.session.add(memo)    # 上記を保存候補に入れる（新規登録の場合必ずaddが必要。まだDBに書きこまれてない）
-        db.session.commit()    # 保存候補になっていた処理を確定する（DBに書き込みされる）
+        # memoテーブルに入れるための「新しいメモ1件分の箱（Memoオブジェクト）」であるmemoを作成。その箱のtitle欄（カラム）に変数titleの値を入れ、body欄には変数bodyの値を入れておく
+        memo = Memo(title=title, body=body)    # ※レコード1行をこれから作る準備
+        db.session.add(memo)    # 今作ったmemo（新しいメモ）を、「DBに保存する予定リスト（セッション）」に登録する
+        db.session.commit()    # 保存予定リスト（セッション）に入っている変更を、DBに反映して確定する（INSERT実行）
 
         # 一覧へ（PRGパターン）
         return redirect(url_for("top"))    # 登録が終わったら、トップページに戻す（GET）    
@@ -185,27 +185,31 @@ def signup():    # signup関数を定義
         # if userid　＝　useridの値が「ちゃんと入っている」なら　→　ちゃんとそれっぽい値が入っているならTrue（真）扱いになるからこう書く
         # ▼ もしuseridの値が「ちゃんと入ってない」、または、password_rawsの値をstrip()した結果が「ちゃんと入ってない」場合は、
         if not userid or not password_raw.strip():    
-            flash("ユーザーIDとパスワードを入力してください。", "error")    # 当該flashメッセージ（カテゴリ：error）をセッションに入れる
-            # ※セッションに入れた（予約した）メッセージは、base.html の get_flashed_messages()が拾って画面に表示させる
+            flash("ユーザーIDとパスワードを入力してください。", "error")    # 当該flashメッセージ（カテゴリ：error）をflash()でセッションに保存する
+            # ※セッションに入れた（予約した）メッセージは、base.html の get_flashed_messages()が拾って次のリクエストで画面に表示させる
             return redirect(url_for("signup"))    # signup関数に紐づいたURL（ユーザー登録画面）にリダイレクトする
 
-        # ここから先は「ユーザーが入力したパスワードそのもの」を使う（空白を含むパスワードも許可）
+        # 入力チェックを通過した変数password_rawの値は、正式にパスワードとして採用することを明示するため変数passwordに格納しなおす（空白を含むパスワードも許可）
         password = password_raw
 
-        # 既存チェック
-        existing = User.query.filter_by(userid=userid).first()
-        if existing:
-            flash("そのユーザーIDはすでに使われています。", "error")
-            return redirect(url_for("signup"))
+        # 既存チェック（DBとのつながり）
+        # userテーブルの中から【userid（カラム） == 変数useridの値】に一致するレコードを検索して、最初の1件をexistingに格納する
+        existing = User.query.filter_by(userid=userid).first()     # ※existingはUserクラスのオブジェクトってことになる
+        if existing:    # もしexistingに「値がちゃんと入っている」場合は、（すでに同じuseridを持つユーザーが存在する場合は、）
+            flash("そのユーザーIDはすでに使われています。", "error")    # 当該flashメッセージ（カテゴリ：error）をflash()でセッションに保存する
+            # ※セッションに入れた（予約した）メッセージは、base.htmlのget_flashed_messages()が拾って次のリクエストで画面に表示させる
+            return redirect(url_for("signup"))    # signup関数に紐づいたURL（ユーザー登録画面）にリダイレクトする
 
-        # ユーザー作成
-        user = User(userid=userid)
-        user.set_password(password)
-        db.session.add(user)
-        db.session.commit()
+        # （既存レコードと重複がなければ）ユーザー作成
+        # userテーブルに入れるための「新しいユーザー1件分の箱（Userオブジェクト）」としてuserを作成。その箱のuserid（カラム）欄に変数useridの値をセットする
+        user = User(userid=userid)    # ※レコード1行をこれから作る準備をしている段階
+        user.set_password(password)    # 変数passwordの値）を、set_password()でハッシュ化して箱（user）のpassword欄にセットする
+        db.session.add(user)    # 上記で作ったuser（新規ユーザー）を、「DBに保存する予定リスト（セッション）」に登録する　session→DB操作の一時置き場/まとめて管理する箱
+        db.session.commit()    # 保存予定リスト（セッション）に入っている変更を確定してDBに書き込む（INSERTを実行）
 
-        flash("ユーザー登録が完了しました。ログインしてください。", "success")
-        return redirect(url_for("login"))
+        flash("ユーザー登録が完了しました。ログインしてください。", "success")    # 当該メッセージ（カテゴリ：success）をflash()でセッションに保存する
+        # ※セッションに入れたメッセージは、base.htmlのget_flashed_messages()が拾って次のリクエストで画面に表示させる
+        return redirect(url_for("login"))    # login関数に紐づいたURL（ログイン画面）にリダイレクトする
 
     # GET（画面を最初に開いたときだった場合はユーザー登録画面の表示のみ）
     return render_template("signup.html")
