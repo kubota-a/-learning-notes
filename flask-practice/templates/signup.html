@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>新規ユーザ登録画面</h1>
-<!--エラーメッセージ部分-->
-<p style="color:red">{{error_message}}</p>
-
-<!--ログインフォーム-->
-<form method="POST">
+<form method="POST" action="{{ url_for('signup') }}">
     <table border="1">
         <tr>
             <th>ユーザーID</th>
@@ -13,7 +9,7 @@
         </tr>
         <tr>
             <td>
-                <input type="text" name="userid" value="{{userid}}">
+                <input type="text" name="userid" value="{{ userid | default('') }}">
             </td>   
             <td>
                 <input type="password" name="password">
@@ -22,5 +18,5 @@
     </table>
     <input type="submit" value="ユーザ登録">
 </form>
-<a href="{{ url_for('login') }}" role="botton">ログイン画面へ戻る</a>
+<a href="{{ url_for('login') }}" role="button">ログイン画面へ戻る</a>
 {% endblock %}
