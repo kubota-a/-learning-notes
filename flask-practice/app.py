@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, abort, flash, url_for
+from flask import Flask, render_template, request, redirect, abort, flash, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import (
@@ -184,7 +184,8 @@ def signup():    # signup関数を定義
         # if not userid　＝　useridの値が「ちゃんと入ってない」なら　→　空文字や空リストやNoneはFalse（偽）扱いになるからこう書く
         # if userid　＝　useridの値が「ちゃんと入っている」なら　→　ちゃんとそれっぽい値が入っているならTrue（真）扱いになるからこう書く
         # ▼ もしuseridの値が「ちゃんと入ってない」、または、password_rawsの値をstrip()した結果が「ちゃんと入ってない」場合は、
-        if not userid or not password_raw.strip():    
+        if not userid or not password_raw.strip():
+            session["signup_userid"] = userid  # ★追加：入力保持
             flash("ユーザーIDとパスワードを入力してください。", "error")    # 当該flashメッセージ（カテゴリ：error）をflash()でセッションに保存する
             # ※セッションに入れた（予約した）メッセージは、base.html の get_flashed_messages()が拾って次のリクエストで画面に表示させる
             return redirect(url_for("signup"))    # signup関数に紐づいたURL（ユーザー登録画面）にリダイレクトする
@@ -196,6 +197,7 @@ def signup():    # signup関数を定義
         # userテーブルの中から【userid（カラム） == 変数useridの値】に一致するレコードを検索して、最初の1件をexistingに格納する
         existing = User.query.filter_by(userid=userid).first()     # ※existingはUserクラスのオブジェクトってことになる
         if existing:    # もしexistingに「値がちゃんと入っている」場合は、（すでに同じuseridを持つユーザーが存在する場合は、）
+            session["signup_userid"] = userid  # ★追加：入力保持
             flash("そのユーザーIDはすでに使われています。", "error")    # 当該flashメッセージ（カテゴリ：error）をflash()でセッションに保存する
             # ※セッションに入れた（予約した）メッセージは、base.htmlのget_flashed_messages()が拾って次のリクエストで画面に表示させる
             return redirect(url_for("signup"))    # signup関数に紐づいたURL（ユーザー登録画面）にリダイレクトする
@@ -207,11 +209,13 @@ def signup():    # signup関数を定義
         db.session.add(user)    # 上記で作ったuser（新規ユーザー）を、「DBに保存する予定リスト（セッション）」に登録する　session→DB操作の一時置き場/まとめて管理する箱
         db.session.commit()    # 保存予定リスト（セッション）に入っている変更を確定してDBに書き込む（INSERTを実行）
 
+        session.pop("signup_userid", None)  # ★任意：成功時は消しておく
         flash("ユーザー登録が完了しました。ログインしてください。", "success")    # 当該メッセージ（カテゴリ：success）をflash()でセッションに保存する
         # ※セッションに入れたメッセージは、base.htmlのget_flashed_messages()が拾って次のリクエストで画面に表示させる
         return redirect(url_for("login"))    # login関数に紐づいたURL（ログイン画面）にリダイレクトする
 
-    # GET（画面を最初に開いたときだった場合はユーザー登録画面の表示のみ）
+    # GET（画面を最初に開いたときだった場合はユーザー登録画面の表示のみ・前回POSTで失敗したときの入力（userid）を復元）
+    userid = session.pop("signup_userid", "")    # ★追加
     return render_template("signup.html")
 
 
