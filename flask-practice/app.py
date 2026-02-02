@@ -222,6 +222,14 @@ def signup():    # signup関数を定義
     userid = session.pop("signup_userid", "")     # ▲ POST失敗後なら保存された文字列が、そうでなけれが空文字がHTMLのuseridに渡されることになる
     return render_template("signup.html")
 
+# ユーザー登録画面の確認用
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    return "login page (未実装)"
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
