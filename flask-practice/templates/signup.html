@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>新規ユーザ登録画面</h1>
-<form method="POST" action="{{ url_for('signup') }}">
+<form method="POST" action="{{ url_for('signup') }}">    <!-- ■　"submit"とセット。「関数signupに紐づいたURL」に送信されるフォーム -->
     <table border="1">
         <tr>
             <th>ユーザーID</th>
@@ -9,14 +9,15 @@
         </tr>
         <tr>
             <td>
-                <input type="text" name="userid" value="{{ userid | default('') }}">
+                <!-- 入力欄（userid）の初期値として、テンプレート変数useridに値が入っていればその値を表示。もしuseridがNoneまたは未定義なら、代わりに空文字を表示 -->
+                <input type="text" name="userid" value="{{ userid | default('') }}">    <!-- value=" ... "は、入力ボックスに表示する初期値を決める部分 -->
             </td>   
             <td>
                 <input type="password" name="password">
             </td>                 
         </tr>
     </table>
-    <input type="submit" value="ユーザ登録">
+    <input type="submit" value="ユーザ登録">    <!--  -->
 </form>
 <a href="{{ url_for('login') }}" role="button">ログイン画面へ戻る</a>
 {% endblock %}
