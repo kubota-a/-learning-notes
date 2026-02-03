@@ -222,10 +222,46 @@ def signup():    # signup関数を定義
     userid = session.pop("signup_userid", "")     # ▲ POST失敗後なら保存された文字列が、そうでなけれが空文字がHTMLのuseridに渡されることになる
     return render_template("signup.html", userid=userid)
 
-# ユーザー登録画面の確認用
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    return "login page (未実装)"
+# ログイン画面　※ユーザー登録画面と共通のコードには■
+@app.route("/login", methods=["GET", "POST"])    # "/login"にアクセスされたら、下の関数で処理。GET（画面表示）とPOST（フォーム送信）どちらも受け付ける
+def login():    # ログイン画面の表示とログイン処理を担当する関数を定義
+    if request.method == "POST":    # ■もし今のリクエストがPOST（＝フォーム送信された）なら、ログイン処理をする
+        # ■フォームから取り出したuseridを、前後の空白を削除した状態で変数useridに格納。useridというキーが存在しない場合は空文字にする
+        userid = request.form.get("userid", "").strip()    # ▲ ユーザーがうっかり前後にスペースを入れてもログインできるようにする（"akina " を "akina" とみなす）
+        # ■フォームから取り出したpasswordを、加工なしで変数password_rawに格納。passwordというキーが存在しなければ空文字にする
+        password_raw = request.form.get("password", "")    # ▲ PWは「空白も含めて入力されたもの」が重要なので、とりあえず生のまま受け取る
+
+        # 入力チェック（最低限）
+        # ■もしuseridに値が「ちゃんと入ってない」、または、password_rawの値をstrip()したものが「ちゃんと入ってない」なら、
+        if not userid or not password_raw.strip():    # ■もしuseridが空（＝未入力）、またはpassword_rawが空白だけで実質空（＝strip()した値が空になった）なら、
+            session["login_userid"] = userid    # ■★入力保持：セッションの中に、辞書としてキー"login_userid"のバリューをuseridの値で保存する
+            # ▲ ■次のリクエストでも、同じユーザーからのアクセスなら値が保持（ブラウザを閉じるまでページを移動しても保持）され、session["login_userid"]で値を取り出せる
+            flash("ユーザーIDとパスワードを入力してください。", "error")    # ■当該メッセージ（カテゴリ：エラー）をflash()でセッションに保存する
+            # ■セッションに入れたメッセージは、base.htmlのget_flashed_messages()が拾って次のリクエストで「1回だけ」画面に表示させる
+            return redirect(url_for("login"))    # ■login関数に紐づいたURL（ログイン画面）にリダイレクトして処理を終える
+        
+        # ■入力チェックを通過したpassword_rawの値は、正式にパスワードとして扱うことを明示するため変数passwordに格納しなおす
+        password = password_raw  # ■パスワードは空白を含めてOK（意図した空白を消さない）
+
+        user = User.query.filter_by(userid=userid).first()
+
+        if user is None or not user.check_password(password):
+            session["login_userid"] = userid
+            flash("ユーザーIDまたはパスワードが違います。", "error")
+            return redirect(url_for("login"))
+
+        # ログイン成功
+        login_user(user)
+        session.pop("login_userid", None)
+        flash("ログインしました。", "success")
+
+        # 「ログイン必須ページに飛ばされた」場合、元のページに戻す
+        next_url = request.args.get("next")
+        return redirect(next_url or url_for("top"))
+
+    # GET：前回失敗した userid を復元
+    userid = session.pop("login_userid", "")
+    return render_template("login_udemy.html", userid=userid)
 
 
 
