@@ -220,7 +220,7 @@ def signup():    # signup関数を定義
     # GET（画面を最初に開いたときだった場合はユーザー登録画面の表示のみ・前回POSTで失敗していた場合には、その時に保存したuseridを復元
     # セッションからキー"signup_userid"の値を取り出して削除する。取り出した値を変数useridに格納（HTMLが拾って返す）。キーが存在しなければ空文字を返す。
     userid = session.pop("signup_userid", "")     # ▲ POST失敗後なら保存された文字列が、そうでなけれが空文字がHTMLのuseridに渡されることになる
-    return render_template("signup.html")
+    return render_template("signup.html", userid=userid)
 
 # ユーザー登録画面の確認用
 @app.route("/login", methods=["GET", "POST"])
