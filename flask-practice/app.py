@@ -243,21 +243,27 @@ def login():    # ログイン画面の表示とログイン処理を担当す�
         # ■入力チェックを通過したpassword_rawの値は、正式にパスワードとして扱うことを明示するため変数passwordに格納しなおす
         password = password_raw  # ■パスワードは空白を含めてOK（意図した空白を消さない）
 
-        user = User.query.filter_by(userid=userid).first()
+        # userテーブルの中から、userid（カラム）が変数useridの値に一致するレコードを検索して、最初の1件を取り出して変数userに格納。一致するものがなければNoneを返す
+        user = User.query.filter_by(userid=userid).first()    # ※userはUserクラスのインスタンス、オブジェクトとなる
 
-        if user is None or not user.check_password(password):
-            session["login_userid"] = userid
-            flash("ユーザーIDまたはパスワードが違います。", "error")
-            return redirect(url_for("login"))
+        # ログイン失敗
+        if user is None or not user.check_password(password):    # 〓〓〓〓もし変数userの値がNoneまたは
+            session["login_userid"] = userid    # 入力保持：セッションに、辞書としてキー"login_userid"でuseridの値を保存する
+            flash("ユーザーIDまたはパスワードが違います。", "error")    # 当該メッセージ（カテゴリ：error）をセッションに保存する
+            # ▲ ※セッションに入れたメッセージは、base.htmlのget_flashed_messages()が拾って1度だけ次のリクエストで画面に表示される
+            return redirect(url_for("login"))    # login関数に紐づいたURLにリダイレクトして処理を終了（二重送信防止&flash表示のため）
 
         # ログイン成功
-        login_user(user)
+        login_user(user)    # このユーザーを「ログイン状態」として記録する（flask_loginのツール関数）
+        # （入力復元用に）保存していたlogin_useridというキーを削除してそのキーの値を返す（実際には戻り値は使わない）。もしキーがなくてもエラーにしないためNoneを返す
         session.pop("login_userid", None)
-        flash("ログインしました。", "success")
+        flash("ログインしました。", "success")    # 当該メッセージ（カテゴリ：success）をセッションに保存
+        # ▲ ※セッションに入れたメッセージは、base.htmlのget_flashed_messages()が拾って1度だけ次のリクエストで画面に表示される
 
-        # 「ログイン必須ページに飛ばされた」場合、元のページに戻す
+        # もしログイン前にアクセスしようとしていたページがあるなら、そこへ戻す（ログイン画面は「踏み台」になることが多いので、元の目的地へ戻すのが親切）
+        # GETのURLクエリ（?xxx=yyy）をまとめた辞書（request.args）から、キー"next"の値（＝元のURL）を取り出してnext_urlに格納。URLに「next=〇〇」がついてなければNone
         next_url = request.args.get("next")
-        return redirect(next_url or url_for("top"))
+        return redirect(next_url or url_for("top"))    # next_urlにちゃんと値が入っていればnext_urlにリダイレクト、そうでなければtop関数に紐づいたURLへリダイレクト
 
     # GET：前回失敗した userid を復元
     userid = session.pop("login_userid", "")
