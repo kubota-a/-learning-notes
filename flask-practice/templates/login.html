@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>ログイン画面</h1>
+<!-- フォームが送信されたらPOSTリクエストを送る・送り先＝login関数に紐づくURLを生成し、現在のクエリパラメータ?next=〇〇を付け足したURL -->
+<form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}">  <!-- GETのURLクエリ（?xxx=yyy）をまとめた辞書（request.args）から、キー"next"の値（＝元のURL）を取り出してnextに格納。URLに「next=〇〇」がついてなければNone -->
+    <table border="1">
+        <tr>
+            <th>ユーザーID</th>
+            <th>パスワード</th>
+        </tr>
+        <tr>
+            <td>
+                <!-- 入力欄（userid）の初期値として、テンプレート変数useridに値が入っていればその値を表示。useridがNoneまたは未定義なら、代わりに空文字を表示 -->
+                <input type="text" name="userid" value="{{ userid | default('') }}">  <!-- value=は、入力ボックスに表示する初期値を決める部分 -->
+            </td>
+            <td>
+                <input type="password" name="password">  <!-- PWでは初期値なし -->
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="ログイン">  <!-- "submit"　フォーム送信ボタン。inputの値を集め、POSTリクエストでデータ送信 -->
+</form>
+
+<a href="{{ url_for('signup') }}" role="button">新規ユーザ登録</a>    <!-- 「新規ユーザ登録」ボタン -->
+
+{% endblock %}

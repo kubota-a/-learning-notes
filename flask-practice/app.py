@@ -44,8 +44,8 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 # flask-login のエラーメッセージ設定　@login_required を付けたページにユーザーがログインなしでアクセスした場合
-# login_manager.login_message = "ログインが必要です。"    # 表示メッセージ
-# login_manager.login_message_category = "warning"    # flashの色（warning/info/errorなど）
+login_manager.login_message = "ログインが必要です"    # 表示メッセージ
+login_manager.login_message_category = "error"    # flashの色（warning/info/errorなど）
 
 
 # =========================================

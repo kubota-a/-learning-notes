@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h1>新規ユーザ登録画面</h1>
-<form method="POST" action="{{ url_for('signup') }}">    <!-- ■　"submit"とセット。「関数signupに紐づいたURL」に送信されるフォーム -->
+
+<form method="POST" action="{{ url_for('signup') }}">    <!-- フォームが送信されたらPOSTリクエストを送る・送り先＝関数signupに紐づくよう生成されたURL -->
     <table border="1">
         <tr>
             <th>ユーザーID</th>
@@ -17,7 +19,9 @@
             </td>                 
         </tr>
     </table>
-    <input type="submit" value="ユーザ登録">    <!--  -->
+    <input type="submit" value="ユーザ登録">    <!-- "submit"　フォーム送信ボタン。inputの値を集め、POSTリクエストでデータ送信 -->
 </form>
-<a href="{{ url_for('login') }}" role="button">ログイン画面へ戻る</a>
+
+<a href="{{ url_for('login') }}" role="button">ログイン画面へ戻る</a>    <!-- 「ログイン画面へ戻る」ボタン -->
+
 {% endblock %}

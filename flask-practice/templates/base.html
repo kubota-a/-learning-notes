@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>メモアプリ</title>
+    <style>
+      .flash { margin: 0 0 10px; font-weight: bold; }
+      .flash.error { color: red; }
+      .flash.warning { color: red; }
+      .flash.success { color: green; }
+    </style>
 </head>
 <!-- フラッシュメッセージ app.pyでflash()されたメッセージを、HTML上で表示するための仕組み。Jinjaのテンプレート処理-->
 <body>
  <!-- Flask関数get_flashed_messages()で、「app.pyでflash()されたメッセージ（メッセージのカテゴリを含む）をまとめて」変数messages（メッセージのリスト）に格納 -->  
   {% with messages = get_flashed_messages(with_categories=true) %}<!-- with→{% with %} ~ {% endwith %}の中だけで使えるローカル変数を作るためのjinja文法 -->
     {% if messages %}   <!-- もし変数messagesの中にメッセージが1つでもあるなら、（messagesが空リストなら下記の処理はしない） -->
-      <ul>
         <!-- with_categories=trueの時のリストは[("success", "ログインしました"),("error", "ユーザー名が違います")]の様になるから、変数は2つ用意してる -->
-        {% for category, message in messages %}   <!-- 変数messagesからメッセージをカテゴリ付きで1つずつ取り出すループ -->   
-          <li>[{{ category }}] {{ message }}</li>   <!-- 取り出したcategoryとmessageをリスト（箇条書き）として表示する -->
+        {% for category, message in messages %}   <!-- 変数messagesからカテゴリとメッセージを1つずつ取り出すループ -->   
+          <p class="flash {{ category }}">{{ message }}</p>   <!-- 取り出したmessageを表示する -->
         {% endfor %}
-      </ul>
     {% endif %}
   {% endwith %}
 

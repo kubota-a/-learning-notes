@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h1>編集</h1>
-<form method="POST" action="{{ url_for('edit', id=memo.id) }}">  <!-- ■　"submit"とセット。「edit関数に紐づいていてURLパラメータがmemo.idなURL」に送信する -->
+<!-- フォーム送信されたらPOSTリクエストを送る。送り先＝edit関数に紐づいていてURLパラメータがmemo.idで生成するURL -->
+<form method="POST" action="{{ url_for('edit', id=memo.id) }}">
     <table border="1">
         <tr>
             <th>タイトル</th>
@@ -18,5 +20,7 @@
     </table>
     <input type="submit" value="編集">  <!-- "submit"　フォーム送信ボタン　■に従ってinputの値を集め、POSTリクエストでデータ送信 -->
 </form>
+
 <a href="{{ url_for('top') }}" role="button">一覧に戻る</a>  <!-- aタグ　リンクボタン　GETリクエストで画面移動 -->
+
 {% endblock %}

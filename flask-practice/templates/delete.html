@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h1>削除</h1>
+
 <p>以下のメモを削除しますか？</p>
-<form method="POST" action="{{ url_for('delete', id=memo.id) }}">  <!-- ■　"submit"とセット。「関数deleteに紐づいていてURLパラメータがmemo.id」のURLに送信 -->
+<!-- フォーム送信されたらPOSTリクエストを送る。送り先＝関数deleteに紐づいていてパラメータがmemo.idで生成されたURL -->
+<form method="POST" action="{{ url_for('delete', id=memo.id) }}">
     <table border="1">
         <tr>
             <th>タイトル</th>
@@ -19,5 +22,7 @@
     </table>
     <input type="submit" value="削除">  <!-- "submit"　フォーム送信ボタン　■に従ってinputの値を集め、POSTリクエストでデータ送信 -->
 </form>
+
 <a href="{{ url_for('top') }}" role="button">一覧に戻る</a>  <!-- aタグ　リンクボタン　GETリクエストで画面移動 -->
+
 {% endblock %}
