@@ -266,12 +266,9 @@ def login():    # ログイン画面の表示とログイン処理を担当す�
         return redirect(next_url or url_for("top"))    # next_urlにちゃんと値が入っていればnext_urlにリダイレクト、そうでなければtop関数に紐づいたURLへリダイレクト
 
     # GET：前回失敗した userid を復元
-    userid = session.pop("login_userid", "")
-    return render_template("login_udemy.html", userid=userid)
-
-
-
-
+    # ログイン失敗時にセッションに保存していたlogin_useridというキーを削除してそのキーの値（キーがなかったら空文字）を変数useridに格納
+    userid = session.pop("login_userid", "")    # ▲ Noneだとフォーム側で表示が変になるかもだから、値がないときは空文字のほうが安全
+    return render_template("login.html", userid=userid)    # login.htmlを表示してテンプレートに変数useridの値を渡す（入力復元用）
 
 if __name__ == "__main__":
     app.run(debug=True)
