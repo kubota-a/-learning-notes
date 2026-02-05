@@ -2,8 +2,13 @@
 {% block content %}
 
 <h1>ログイン画面</h1>
-<!-- フォームが送信されたらPOSTリクエストを送る・送り先＝login関数に紐づくURLを生成し、現在のクエリパラメータ?next=〇〇を付け足したURL -->
-<form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}">  <!-- GETのURLクエリ（?xxx=yyy）をまとめた辞書（request.args）から、キー"next"の値（＝元のURL）を取り出してnextに格納。URLに「next=〇〇」がついてなければNone -->
+
+<form method="POST" 
+      action="{{ url_for('login', next=request.args.get('next')) }}" 
+      autocomplete="on">
+    <!-- フォームが送信されたらPOSTリクエストを送る・送り先＝login関数に紐づくURLを生成し、現在のクエリパラメータ?next=〇〇を付け足したURL -->
+    <!-- GETのURLクエリ（?xxx=yyy）をまとめた辞書（request.args）から、キー"next"の値（＝元のURL）を取り出してnextに格納。URLに「next=〇〇」がついてなければNone -->
+    <!-- このフォームの入力欄について、ブラウザのオートコンプリートを許可するモードにする -->
     <table border="1">
         <tr>
             <th>ユーザーID</th>
@@ -11,11 +16,20 @@
         </tr>
         <tr>
             <td>
-                <!-- 入力欄（userid）の初期値として、テンプレート変数useridに値が入っていればその値を表示。useridがNoneまたは未定義なら、代わりに空文字を表示 -->
-                <input type="text" name="userid" value="{{ userid | default('') }}">  <!-- value=は、入力ボックスに表示する初期値を決める部分 -->
+                
+                <input type="text" name="userid" 
+                       value="{{ userid | default('') }}"
+                       autocomplete="username">
+                       <!-- value=は、入力ボックスに表示する初期値を決める部分 -->
+                       <!-- 入力欄（userid）の初期値として、テンプレート変数useridに値が入っていればその値を表示。useridがNoneまたは未定義なら、代わりに空文字を表示 -->
+                       <!-- この入力欄は「ユーザー名（ログインID）」として扱うと明示。→ブラウザではusername用の入力候補を優先的に提案するように --> 
             </td>
             <td>
-                <input type="password" name="password">  <!-- PWでは初期値なし -->
+                <input type="password" name="password"
+                       autocomplete="current-password">
+                       <!-- PWでは初期値なし -->
+                       <!-- この入力欄は「ログイン時の既存パスワードを入れる欄」であると明示。→ブラウザでは保存済みPWの自動入力をしてOKとする -->
+
             </td>
         </tr>
     </table>

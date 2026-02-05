@@ -254,7 +254,7 @@ def login():    # ログイン画面の表示とログイン処理を担当す�
         # もし変数userの値がNone（一致するIDがない）またはUserメソッドcheck_password()によるPW照合の結果が「trueじゃない＝false」（PWが一致しない）場合は、
         if user is None or not user.check_password(password):
             session["login_userid"] = userid    # 入力保持：セッションに、辞書としてキー"login_userid"でuseridの値を保存する
-            flash("ユーザーIDまたはパスワードが違います。", "error")    # 当該メッセージ（カテゴリ：error）をセッションに保存する
+            flash("ユーザーIDまたはパスワードが違います。", "error")    # 当該メッセージ（カテゴリ：error）をセッションに保存する　※ユーザー列挙対策としてエラーメッセージは統一
             # ▲ ※セッションに入れたメッセージは、base.htmlのget_flashed_messages()が拾って1度だけ次のリクエストで画面に表示される
             return redirect(url_for("login"))    # login関数に紐づいたURLにリダイレクトして処理を終了（二重送信防止&flash表示のため）
 
