@@ -101,6 +101,7 @@ class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブ�
 # =========================================
 # トップページ
 @app.route("/")    # トップページにアクセスされたら下の関数が動く
+@login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def top():
     memo_list = Memo.query.order_by(Memo.id.desc()).all()
     # メモのテーブル(モデル)のDBからデータを取得する準備、idの降順(新しい順)に並べる、全件取得。それをmemo_listに格納
@@ -108,6 +109,7 @@ def top():
 
 # 新規登録画面　トップ画面の「新規登録ボタン」からアクセス
 @app.route("/regist", methods = ['GET', 'POST'])    # 新規登録画面にアクセスされたら下の関数が動く。GETでもPOSTでも下の関数で処理する。
+@login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def regist():
     # POST（Create処理）
     if request.method == 'POST':    # 今来たリクエストがPOST（登録ボタンが押された）なら、下記の処理を行う
@@ -129,6 +131,7 @@ def regist():
 
 # 編集画面　トップ画面の「編集ボタン」からアクセス。
 @app.route("/<int:id>/edit", methods = ['GET', 'POST'])    # <int:id>にすると自動でintに変換される。「id」はURLパラメータ（どのデータかを指定するための情報）
+@login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def edit(id):    # URLパラメータが引数。ここで「どのメモを編集するか」が決まる
 
     # URLでIDを受け取る→DBからその1件を取得→HTML側で初期値入りのフォームを表示（GET/POST共通） 
@@ -150,6 +153,7 @@ def edit(id):    # URLパラメータが引数。ここで「どのメモを編�
 
 # 削除画面　トップ画面の「削除ボタン」からアクセス。
 @app.route("/<int:id>/delete", methods = ['GET', 'POST'])    # <int:id>にすると自動でintに変換される。「id」はURLパラメータ（どのデータかを指定するための情報）
+@login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def delete(id):    # URLパラメータが引数。ここで「どのメモを削除するか」が決まる
 
     # URLでIDを受け取る→DBからその1件を取得→（GET/POST共通） 
@@ -247,7 +251,8 @@ def login():    # ログイン画面の表示とログイン処理を担当す�
         user = User.query.filter_by(userid=userid).first()    # ※userはUserクラスのインスタンス、オブジェクトとなる
 
         # ログイン失敗
-        if user is None or not user.check_password(password):    # 〓〓〓〓もし変数userの値がNoneまたは
+        # もし変数userの値がNone（一致するIDがない）またはUserメソッドcheck_password()によるPW照合の結果が「trueじゃない＝false」（PWが一致しない）場合は、
+        if user is None or not user.check_password(password):
             session["login_userid"] = userid    # 入力保持：セッションに、辞書としてキー"login_userid"でuseridの値を保存する
             flash("ユーザーIDまたはパスワードが違います。", "error")    # 当該メッセージ（カテゴリ：error）をセッションに保存する
             # ▲ ※セッションに入れたメッセージは、base.htmlのget_flashed_messages()が拾って1度だけ次のリクエストで画面に表示される
