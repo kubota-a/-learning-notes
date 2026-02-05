@@ -275,5 +275,14 @@ def login():    # ログイン画面の表示とログイン処理を担当す�
     userid = session.pop("login_userid", "")    # ▲ Noneだとフォーム側で表示が変になるかもだから、値がないときは空文字のほうが安全
     return render_template("login.html", userid=userid)    # login.htmlを表示してテンプレートに変数useridの値を渡す（入力復元用）
 
+# ログアウト
+@app.route("/logout", methods=["POST"])    # /logoutにアクセスされたら下の関数で処理。リクエストはPOSTのみ受け付ける　※ログアウトはCSRF対策のためPOSTにする
+@login_required    # ログインしていない状態で /logout を勝手に叩かれるとセッションの扱いが不明確になって攻撃される可能性あり（Flask-Login の公式ドキュメントでも推奨）
+def logout():    # ログアウト関数を定義
+    logout_user()    # flask_loginのツール関数logout_user()を実行（ログイン状態を保持していた「セッション中のユーザー情報」を削除する）
+    flash("ログアウトしました。", "success")    # セッションに当該メッセージ（カテゴリはsuccess）を一時保存し、次のリクエストで表示できるように準備
+    return redirect(url_for("top"))    # top関数に紐づくよう生成されたURLにリダイレクトして処理を終了
+    # POSTで受けて、処理が終わったら安全な場所（トップページ）にGETでリダイレクトして終了！→PRGパターン（Post/Redirect/Get）
+
 if __name__ == "__main__":
     app.run(debug=True)

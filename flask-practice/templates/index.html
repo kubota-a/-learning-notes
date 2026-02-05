@@ -3,6 +3,11 @@
 
 <h1>メモアプリ</h1>
 
+    <!-- ログアウトボタン（POST専用） -->
+    <form method="POST" action="/logout" style="display:inline;">
+        <button type="submit">ログアウト</button>
+    </form>
+
     <a href="{{ url_for('regist') }}" role="button">新規登録</a>
 
     {% if memo_list == [] %}
@@ -25,6 +30,6 @@
                 </tr>
             {% endfor %}
         </table>
-        
+
     {% endif %}
 {% endblock %}
