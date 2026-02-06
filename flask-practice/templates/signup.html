@@ -3,7 +3,10 @@
 
 <h1>新規ユーザ登録画面</h1>
 
-<form method="POST" action="{{ url_for('signup') }}">    <!-- フォームが送信されたらPOSTリクエストを送る・送り先＝関数signupに紐づくよう生成されたURL -->
+<form method="POST" 
+      action="{{ url_for('signup') }}"
+      autocomplete="off">
+      <!-- フォームが送信されたらPOSTリクエストを送る・送り先＝関数signupに紐づくよう生成されたURL・ブラウザのオートコンプリートはOFF -->
     <table border="1">
         <tr>
             <th>ユーザーID</th>
@@ -12,10 +15,16 @@
         <tr>
             <td>
                 <!-- 入力欄（userid）の初期値として、テンプレート変数useridに値が入っていればその値を表示。もしuseridがNoneまたは未定義なら、代わりに空文字を表示 -->
-                <input type="text" name="userid" value="{{ userid | default('') }}">    <!-- value=" ... "は、入力ボックスに表示する初期値を決める部分 -->
+                <input type="text" name="userid" 
+                       value="{{ userid | default('') }}"
+                       autocomplete="username">    
+                       <!-- value=" ... "は、入力ボックスに表示する初期値を決める部分 -->
+                       <!-- 自動入力offなので候補リストは抑制されるが、フィールドの意味付けを固定化するため、この入力欄は「ユーザーID」であるとブラウザに伝えておく -->
             </td>   
             <td>
-                <input type="password" name="password">
+                <input type="password" name="password"
+                       autocomplete="new-password">
+                       <!-- 自動入力offだが念押しで、ブラウザに「この欄は既存PWの自動入力をする場所じゃなく、新規PW登録候補として扱え」という意思表示 -->
             </td>                 
         </tr>
     </table>
