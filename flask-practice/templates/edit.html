@@ -2,8 +2,11 @@
 {% block content %}
 
 <h1>編集</h1>
-<!-- フォーム送信されたらPOSTリクエストを送る。送り先＝edit関数に紐づいていてURLパラメータがmemo.idで生成するURL -->
-<form method="POST" action="{{ url_for('edit', id=memo.id) }}">
+
+<form method="POST" 
+      action="{{ url_for('edit', id=memo.id) }}"
+      autocomplete="off">
+      <!-- フォーム送信されたらPOSTリクエストを送る・送り先＝edit関数に紐づいていてURLパラメータがmemo.idで生成するURL・ブラウザのオートコンプリートはOFF -->
     <table border="1">
         <tr>
             <th>タイトル</th>
@@ -11,10 +14,15 @@
         </tr>
         <tr>
             <td>
-                <input type="text" name="title" value="{{memo.title}}">  <!-- name="title"はPythonに渡されるPOST時のキー名・{{memo.title}}は初期値表示用 -->
+                <input type="text" name="title" 
+                       value="{{memo.title}}"
+                       autocomplete="off">  
+                       <!-- name="title"はPythonに渡されるPOST時のキー名・{{memo.title}}は初期値表示用・ブラウザのオートコンプリートはOFF -->
             </td>
             <td>
-                <input type="text" name="body" value="{{memo.body}}">
+                <input type="text" name="body" 
+                       value="{{memo.body}}"
+                       autocomplete="off">
             </td>
         </tr>
     </table>
