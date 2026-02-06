@@ -3,7 +3,11 @@
 
 <h1>新規登録</h1>
 
-<form method="POST" action="{{ url_for('regist') }}">  <!-- フォーム送信されたらPOSTリクエストを送る。送り先＝関数registに紐づけて生成するURL -->
+<form method="POST" 
+      action="{{ url_for('regist') }}"
+      autocomplete="off">  
+      <!-- フォーム送信されたらPOSTリクエストを送る。送り先＝関数registに紐づけて生成するURL -->
+      <!-- ブラウザのオートコンプリートはOFF -->
     <table border="1">
         <tr>
             <th>タイトル</th>
@@ -11,10 +15,11 @@
         </tr>
         <tr>
             <td>
-                <input type="text" name="title">  <!-- name="title"が、Pythonに渡す値。Python側のgetの中身になる。request.form.get('title') -->
+                <input type="text" name="title" autocomplete="off">  
+                <!-- name="title"が、Pythonに渡す値。Python側のgetの中身になる。request.form.get('title') -->
             </td>
             <td>
-                <input type="text" name="body">  <!-- name="body"が、上記と同じ。 -->
+                <input type="text" name="body" autocomplete="off">  <!-- name="body"が、上記と同じ。 -->
             </td>
         </tr>
     </table>
