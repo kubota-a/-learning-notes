@@ -135,7 +135,7 @@ def regist():
 def edit(id):    # URLパラメータが引数。ここで「どのメモを編集するか」が決まる
 
     # URLでIDを受け取る→DBからその1件を取得→HTML側で初期値入りのフォームを表示（GET/POST共通） 
-    memo = Memo.query.get(id)    # memoテーブルから主キーがidのレコードを1件取得し、「memo」というオブジェクトとして返す
+    memo = db.session.get(Memo, id)    # memoテーブルから主キーがidのレコードを1件取得し、「memo」というオブジェクトとして返す
     if memo is None:    # memoが空だったら=URLに存在しないIDが来たら
         abort(404)    # エラー画面を返す
 
@@ -157,7 +157,7 @@ def edit(id):    # URLパラメータが引数。ここで「どのメモを編�
 def delete(id):    # URLパラメータが引数。ここで「どのメモを削除するか」が決まる
 
     # URLでIDを受け取る→DBからその1件を取得→（GET/POST共通） 
-    memo = Memo.query.get(id)    # memoテーブルから主キーがidのレコードを1件取得し、「memo」というオブジェクトとして返す
+    memo = db.session.get(Memo, id)    # memoテーブルから主キーがidのレコードを1件取得し、「memo」というオブジェクトとして返す
     if memo is None:    # memoが空だったら=URLに存在しないIDが来たら
         abort(404)    # エラー画面を返す
 

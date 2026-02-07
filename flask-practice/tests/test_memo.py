@@ -1,35 +1,80 @@
 # tests/test_memo.py
-from app import db, User
-
-def login(client, userid="taro", password="pw12345"):
-    # テスト用ユーザー作成
-    # ※useridがユニーク制約なら毎回違う値にしてもOK
-    with client.application.app_context():
-        user = User(userid=userid)
-        user.set_password(password)
-        db.session.add(user)
-        db.session.commit()
-
-    # ログイン
-    resp = client.post(
-        "/login",
-        data={"userid": userid, "password": password},
-        follow_redirects=False,
-    )
-    assert resp.status_code == 302
+from app import db, Memo
 
 
-def test_create_memo(client):
-    login(client)
-
-    # メモ作成（ここがあなたのフォームnameに依存）
-    resp = client.post(
+def test_create_memo(logged_in_client, app):
+    r = logged_in_client.post(
         "/regist",
-        data={"title": "test title", "body": "test body"},
-        follow_redirects=False,
+        data={"title": "T1", "body": "M1"},  # memo -> body
+        follow_redirects=True,
+    )
+    assert r.status_code == 200
+
+    with app.app_context():
+        m = Memo.query.order_by(Memo.id.desc()).first()
+        assert m is not None
+        assert m.title == "T1"
+        assert m.body == "M1"
+
+
+def test_edit_memo(logged_in_client, app):
+    # まず作る
+    logged_in_client.post(
+        "/regist",
+        data={"title": "before", "body": "before memo"},  # memo -> body
+        follow_redirects=True,
     )
 
-    # 成功したらトップへリダイレクトされる想定（多い）
-    assert resp.status_code in (302, 303)
-    location = resp.headers.get("Location", "")
-    assert "/" in location
+    with app.app_context():
+        m = Memo.query.order_by(Memo.id.desc()).first()
+        memo_id = m.id
+
+    # 編集画面GET（表示できること）
+    r_get = logged_in_client.get(f"/{memo_id}/edit")
+    assert r_get.status_code == 200
+
+    # 更新POST
+    r_post = logged_in_client.post(
+        f"/{memo_id}/edit",
+        data={"title": "after", "body": "after memo"},
+        follow_redirects=True,
+    )
+    assert r_post.status_code == 200
+
+    with app.app_context():
+        updated = db.session.get(Memo, memo_id)
+        assert updated.title == "after"
+        assert updated.body == "after memo"
+
+
+def test_delete_memo_and_reload_is_safe(logged_in_client, app):
+    # まず作る
+    logged_in_client.post(
+        "/regist",
+        data={"title": "del_target", "body": "will delete"},  # memo -> body
+        follow_redirects=True,
+    )
+
+    with app.app_context():
+        m = Memo.query.order_by(Memo.id.desc()).first()
+        memo_id = m.id
+
+    # 削除確認ページを GET（= F5相当）
+    # ※GET しただけでは削除されないこと
+    r_get = logged_in_client.get(f"/{memo_id}/delete")
+    assert r_get.status_code == 200
+
+    with app.app_context():
+        still_exists = db.session.get(Memo, memo_id)
+        assert still_exists is not None
+
+    # 削除を POST
+    r_post = logged_in_client.post(
+        f"/{memo_id}/delete",
+        follow_redirects=True,
+    )
+    assert r_post.status_code == 200
+
+    with app.app_context():
+        deleted = db.session.get(Memo, memo_id)
+        assert deleted is None
