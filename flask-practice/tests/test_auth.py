@@ -31,7 +31,7 @@ def test_edit_memo(logged_in_client, app):
     assert res.status_code == 200
 
     with app.app_context():
-        updated = Memo.query.get(memo_id)
+        updated = db.session.get(Memo, memo_id)
         assert updated.title == "after"
         assert updated.body == "body2"
 
@@ -50,5 +50,5 @@ def test_delete_memo(logged_in_client, app):
     assert res.status_code == 200
 
     with app.app_context():
-        deleted = Memo.query.get(memo_id)
+        deleted = db.session.get(Memo, memo_id)
         assert deleted is None
