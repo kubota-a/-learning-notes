@@ -35,8 +35,10 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # =========================================
-# ■Flask-Login 設定（ログイン管理）
+# 認証（ログイン管理）
 # =========================================
+
+# --- Flask-Login 設定 ---
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -47,12 +49,7 @@ login_manager.login_view = "login"
 login_manager.login_message = "ログインが必要です"    # 表示メッセージ
 login_manager.login_message_category = "error"    # flashの色（warning/info/errorなど）
 
-
-# =========================================
-# DBモデル
-# =========================================
-
-# ■ユーザー　「userというテーブルを、Pythonのクラスとして表現します」
+# --- Userモデル---
 class User(UserMixin, db.Model):    # このUserというクラスは、DBのテーブルと対応します
     __tablename__ = "user"    # 実際のDB上のテーブル名をuserに指定
 
@@ -76,14 +73,18 @@ class User(UserMixin, db.Model):    # このUserというクラスは、DBのテ
     def __repr__(self) -> str:
         return f"<User {self.userid}>"
 
+# --- ログイン状態の復元 ---
 # 「ログイン状態（セッション）から、今ログイン中のUserを復元する仕組み」を登録
 @login_manager.user_loader    # デコレータ（関数に役割を付ける）：下記の関数を、flask-loginが「ユーザーIDから今ログイン中のユーザーを復元する係」として使用する
 def load_user(user_id: str):    # 上記で「user_loader係」として任命された関数load_userを定義。引数はflask-login から渡されるuser_id（文字列型）
     # user_id →　flask-loginはログイン状態を記憶するとき、内部でユーザーのID（主キー）だけを保存する。辻にリクエストが来たとき、保存してたIDをここに渡してくる
     return User.query.get(int(user_id))    # Userテーブルからint型にキャストしたuser_idを検索し、Userインスタンスを取得。そのインスタンスを戻り値として返す
 
+# =========================================
+# メモ機能（CRUD）
+# =========================================
 
-# メモ　「memoというテーブルを、Pythonのクラスとして表現します。」
+# --- Memoモデル ---
 class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブルと対応します」
     __tablename__ = "memo"    # 実際のDB上のテーブル名をmemoに指定
 
@@ -95,11 +96,7 @@ class Memo(db.Model):    # 「このMemoというクラスは、DBのテーブ�
     def __repr__(self) -> str:
         return f"<Memo {self.id}>"
 
-
-# =========================================
-# ルーティング（メモCRUD）
-# =========================================
-# トップページ
+# --- トップページ（メモ一覧） ---
 @app.route("/")    # トップページにアクセスされたら下の関数が動く
 @login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def top():
@@ -107,7 +104,8 @@ def top():
     # メモのテーブル(モデル)のDBからデータを取得する準備、idの降順(新しい順)に並べる、全件取得。それをmemo_listに格納
     return render_template('index.html', memo_list=memo_list)    # memo_listを'index.html'に渡して表示させる
 
-# 新規登録画面　トップ画面の「新規登録ボタン」からアクセス
+# --- 新規登録 ---
+# トップ画面の「新規登録ボタン」からアクセス
 @app.route("/regist", methods = ['GET', 'POST'])    # 新規登録画面にアクセスされたら下の関数が動く。GETでもPOSTでも下の関数で処理する。
 @login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def regist():
@@ -129,7 +127,8 @@ def regist():
     # GET（画面を最初に開いたとき）だった場合は画面表示のみ
     return render_template('regist.html')
 
-# 編集画面　トップ画面の「編集ボタン」からアクセス。
+# --- 編集 ---　
+# トップ画面の「編集ボタン」からアクセス。
 @app.route("/<int:id>/edit", methods = ['GET', 'POST'])    # <int:id>にすると自動でintに変換される。「id」はURLパラメータ（どのデータかを指定するための情報）
 @login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def edit(id):    # URLパラメータが引数。ここで「どのメモを編集するか」が決まる
@@ -151,7 +150,8 @@ def edit(id):    # URLパラメータが引数。ここで「どのメモを編�
     # GET（画面を最初に開いたとき）だった場合は編集画面の表示のみ
     return render_template("edit.html", memo=memo)    # 取得したmemoをテンプレートに渡して編集画面を返す
 
-# 削除画面　トップ画面の「削除ボタン」からアクセス。
+# --- 削除 ---
+# トップ画面の「削除ボタン」からアクセス。
 @app.route("/<int:id>/delete", methods = ['GET', 'POST'])    # <int:id>にすると自動でintに変換される。「id」はURLパラメータ（どのデータかを指定するための情報）
 @login_required    # 未ログインでアクセスされたら"login"に飛ばす
 def delete(id):    # URLパラメータが引数。ここで「どのメモを削除するか」が決まる
@@ -173,7 +173,8 @@ def delete(id):    # URLパラメータが引数。ここで「どのメモを�
 # =========================================
 # 認証（サインアップ / ログイン / ログアウト）
 # =========================================
-# ユーザー登録画面
+
+# --- サインアップ ---
 @app.route("/signup", methods=["GET", "POST"])    # ユーザー登録画面にアクセスされたら下記の関数が動く。リクエストはGETとPOSTどちらも受け付ける
 def signup():    # signup関数を定義
     if request.method == "POST":    # もしリクエストがPOSTだった場合（フォームの「登録」ボタンが押されたとき）は下記の処理を行う
@@ -226,7 +227,8 @@ def signup():    # signup関数を定義
     userid = session.pop("signup_userid", "")     # ▲ POST失敗後なら保存された文字列が、そうでなけれが空文字がHTMLのuseridに渡されることになる
     return render_template("signup.html", userid=userid)
 
-# ログイン画面　※ユーザー登録画面と共通のコードには■
+# --- ログイン ---
+# ※ユーザー登録画面と共通のコードには■
 @app.route("/login", methods=["GET", "POST"])    # "/login"にアクセスされたら、下の関数で処理。GET（画面表示）とPOST（フォーム送信）どちらも受け付ける
 def login():    # ログイン画面の表示とログイン処理を担当する関数を定義
     if request.method == "POST":    # ■もし今のリクエストがPOST（＝フォーム送信された）なら、ログイン処理をする
@@ -275,7 +277,7 @@ def login():    # ログイン画面の表示とログイン処理を担当す�
     userid = session.pop("login_userid", "")    # ▲ Noneだとフォーム側で表示が変になるかもだから、値がないときは空文字のほうが安全
     return render_template("login.html", userid=userid)    # login.htmlを表示してテンプレートに変数useridの値を渡す（入力復元用）
 
-# ログアウト
+# --- ログアウト ---
 @app.route("/logout", methods=["POST"])    # /logoutにアクセスされたら下の関数で処理。リクエストはPOSTのみ受け付ける　※ログアウトはCSRF対策のためPOSTにする
 @login_required    # ログインしていない状態で /logout を勝手に叩かれるとセッションの扱いが不明確になって攻撃される可能性あり（Flask-Login の公式ドキュメントでも推奨）
 def logout():    # ログアウト関数を定義
@@ -284,5 +286,8 @@ def logout():    # ログアウト関数を定義
     return redirect(url_for("top"))    # top関数に紐づくよう生成されたURLにリダイレクトして処理を終了
     # POSTで受けて、処理が終わったら安全な場所（トップページ）にGETでリダイレクトして終了！→PRGパターン（Post/Redirect/Get）
 
+# =========================================
+# アプリ起動
+# =========================================
 if __name__ == "__main__":
     app.run(debug=True)
