@@ -1,41 +1,56 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>ログイン画面</h1>
+<div class="min-h-screen bg-[#FAF3DD]">
+  <div class="mx-auto max-w-5xl px-4 py-10">
+    <h1 class="mb-6 text-2xl font-semibold tracking-tight text-[#5E6472]">ログイン画面</h1>
 
-<form method="POST" 
-      action="{{ url_for('login', next=request.args.get('next')) }}" 
-      autocomplete="on">
-    <!-- フォームが送信されたらPOSTリクエストを送る・送り先＝login関数に紐づくURLを生成し、現在のクエリパラメータ?next=〇〇を付け足したURL -->
+    <!-- ▼　フォームが送信されたらPOSTリクエストを送る・送り先＝login関数に紐づくURLを生成し、現在のクエリパラメータ?next=〇〇を付け足したURL -->
     <!-- GETのURLクエリ（?xxx=yyy）をまとめた辞書（request.args）から、キー"next"の値（＝元のURL）を取り出してnextに格納。URLに「next=〇〇」がついてなければNone -->
     <!-- このフォームの入力欄について、ブラウザのオートコンプリートを許可するモードにする -->
-    <table border="1">
-        <tr>
-            <th>ユーザーID</th>
-            <th>パスワード</th>
-        </tr>
-        <tr>
-            <td>
-                
-                <input type="text" name="userid" 
+    <form method="POST"
+          action="{{ url_for('login', next=request.args.get('next')) }}"
+          autocomplete="on"
+          class="mb-6">
+      <div class="overflow-hidden rounded-2xl border border-[#AED9E0] bg-white shadow-sm">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-[#AED9E0]/60">
+            <tr>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#5E6472]">ユーザーID</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#5E6472]">パスワード</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr>
+              <td class="px-4 py-3">
+                <!-- ▼　value=は、入力ボックスに表示する初期値を決める部分 -->
+                <!-- 入力欄（userid）の初期値として、テンプレート変数useridに値が入っていればその値を表示。useridがNoneまたは未定義なら、代わりに空文字を表示 -->
+                <!-- この入力欄は「ユーザー名（ログインID）」として扱うと明示。→ブラウザではusername用の入力候補を優先的に提案するように -->
+                <input type="text" name="userid"
                        value="{{ userid | default('') }}"
-                       autocomplete="username">
-                       <!-- value=は、入力ボックスに表示する初期値を決める部分 -->
-                       <!-- 入力欄（userid）の初期値として、テンプレート変数useridに値が入っていればその値を表示。useridがNoneまたは未定義なら、代わりに空文字を表示 -->
-                       <!-- この入力欄は「ユーザー名（ログインID）」として扱うと明示。→ブラウザではusername用の入力候補を優先的に提案するように --> 
-            </td>
-            <td>
+                       autocomplete="username"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#5E6472] focus:outline-none focus:ring-2 focus:ring-[#AED9E0]">
+              </td>
+              <td class="px-4 py-3">
+                <!-- ▼　PWでは初期値なし -->
+                <!-- この入力欄は「ログイン時の既存パスワードを入れる欄」であると明示。→ブラウザでは保存済みPWの自動入力をしてOKとする -->
                 <input type="password" name="password"
-                       autocomplete="current-password">
-                       <!-- PWでは初期値なし -->
-                       <!-- この入力欄は「ログイン時の既存パスワードを入れる欄」であると明示。→ブラウザでは保存済みPWの自動入力をしてOKとする -->
+                       autocomplete="current-password"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#5E6472] focus:outline-none focus:ring-2 focus:ring-[#AED9E0]">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <!-- ▼　"submit"　フォーム送信ボタン。inputの値を集め、POSTリクエストでデータ送信 -->
+        <button type="submit" class="inline-flex items-center rounded-lg bg-[#5E6472] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#4d5360] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">ログイン</button>
+      </div>
+    </form>
 
-            </td>
-        </tr>
-    </table>
-    <input type="submit" value="ログイン">  <!-- "submit"　フォーム送信ボタン。inputの値を集め、POSTリクエストでデータ送信 -->
-</form>
-
-<a href="{{ url_for('signup') }}" role="button">新規ユーザ登録</a>    <!-- 「新規ユーザ登録」ボタン -->
+    <!-- 「新規ユーザ登録」ボタン -->
+    <a href="{{ url_for('signup') }}" role="button" class="inline-flex items-center rounded-lg border border-[#5E6472]/40 bg-white px-4 py-2 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#AED9E0]/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">新規ユーザ登録</a>
+  </div>
+</div>
 
 {% endblock %}

@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>メモアプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>    <!-- Tailwind CDNの読み込み -->
     <style>
-      .flash { margin: 0 0 10px; font-weight: bold; }
-      .flash.error { color: red; }
-      .flash.warning { color: red; }
-      .flash.success { color: green; }
+      .flash { margin: 0 0 4px; font-weight: bold; font-size: 0.75rem; line-height: 1.25; }
+      /* クリーム背景に合わせた落ち着いた色（パレット調） */
+      .flash.error { color: #b56576; }   /* ダスティローズ（くすんだ赤） */
+      .flash.warning { color: #b56576; } /* error と統一 */
+      .flash.success { color: #2d6a4f; } /* ダークティール（落ち着いた緑） */
     </style>
 </head>
-<!-- フラッシュメッセージ app.pyでflash()されたメッセージを、HTML上で表示するための仕組み。Jinjaのテンプレート処理-->
-<body>
+<!-- ▲　フラッシュメッセージ app.pyでflash()されたメッセージを、HTML上で表示するための仕組み。Jinjaのテンプレート処理-->
+<body class="min-h-screen bg-[#FAF3DD]">
  <!-- Flask関数get_flashed_messages()で、「app.pyでflash()されたメッセージ（メッセージのカテゴリを含む）をまとめて」変数messages（メッセージのリスト）に格納 -->  
   {% with messages = get_flashed_messages(with_categories=true) %}<!-- with→{% with %} ~ {% endwith %}の中だけで使えるローカル変数を作るためのjinja文法 -->
     {% if messages %}   <!-- もし変数messagesの中にメッセージが1つでもあるなら、（messagesが空リストなら下記の処理はしない） -->

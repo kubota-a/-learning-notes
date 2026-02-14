@@ -1,34 +1,51 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>編集</h1>
+<div class="min-h-screen bg-[#FAF3DD]">
+  <div class="mx-auto max-w-5xl px-4 py-10">
+    <h1 class="mb-6 text-2xl font-semibold tracking-tight text-[#5E6472]">編集</h1>
 
-<form method="POST" 
-      action="{{ url_for('edit', id=memo.id) }}"
-      autocomplete="off">
-      <!-- フォーム送信されたらPOSTリクエストを送る・送り先＝edit関数に紐づいていてURLパラメータがmemo.idで生成するURL・ブラウザのオートコンプリートはOFF -->
-    <table border="1">
-        <tr>
-            <th>タイトル</th>
-            <th>メモ</th>
-        </tr>
-        <tr>
-            <td>
-                <input type="text" name="title" 
+    <!-- ▼　フォーム送信されたらPOSTリクエストを送る・送り先＝edit関数に紐づいていてURLパラメータがmemo.idで生成するURL・ブラウザのオートコンプリートはOFF -->
+    <form method="POST"
+          action="{{ url_for('edit', id=memo.id) }}"
+          autocomplete="off"
+          class="mb-6">
+      <div class="overflow-hidden rounded-2xl border border-[#AED9E0] bg-white shadow-sm">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-[#AED9E0]/60">
+            <tr>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#5E6472]">タイトル</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#5E6472]">メモ</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr>
+              <td class="px-4 py-3">
+                <!-- ▼　name="title"はPythonに渡されるPOST時のキー名・{{memo.title}}は初期値表示用・ブラウザのオートコンプリートはOFF -->
+                <input type="text" name="title"
                        value="{{memo.title}}"
-                       autocomplete="off">  
-                       <!-- name="title"はPythonに渡されるPOST時のキー名・{{memo.title}}は初期値表示用・ブラウザのオートコンプリートはOFF -->
-            </td>
-            <td>
-                <input type="text" name="body" 
+                       autocomplete="off"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#5E6472] focus:outline-none focus:ring-2 focus:ring-[#AED9E0]">
+              </td>
+              <td class="px-4 py-3">
+                <input type="text" name="body"
                        value="{{memo.body}}"
-                       autocomplete="off">
-            </td>
-        </tr>
-    </table>
-    <input type="submit" value="編集">  <!-- "submit"　フォーム送信ボタン　■に従ってinputの値を集め、POSTリクエストでデータ送信 -->
-</form>
+                       autocomplete="off"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#5E6472] focus:outline-none focus:ring-2 focus:ring-[#AED9E0]">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <!-- ▼　"submit"　フォーム送信ボタン　■に従ってinputの値を集め、POSTリクエストでデータ送信 -->
+        <button type="submit" class="inline-flex items-center rounded-lg bg-[#B8F2E6] px-4 py-2 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#9de9d9] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8F2E6] focus-visible:ring-offset-2">編集</button>
+      </div>
+    </form>
 
-<a href="{{ url_for('top') }}" role="button">一覧に戻る</a>  <!-- aタグ　リンクボタン　GETリクエストで画面移動 -->
+    <!-- ▼　aタグ　リンクボタン　GETリクエストで画面移動 -->
+    <a href="{{ url_for('top') }}" role="button" class="inline-flex items-center rounded-lg border border-[#5E6472]/40 bg-white px-4 py-2 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#AED9E0]/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">一覧に戻る</a>
+  </div>
+</div>
 
 {% endblock %}

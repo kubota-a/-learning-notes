@@ -1,35 +1,114 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>メモアプリ</h1>
+<div class="min-h-screen bg-[#FAF3DD]">
+  <div class="mx-auto max-w-5xl px-4 py-10">
+    <!-- Header -->
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <h1 class="text-2xl font-semibold tracking-tight text-[#5E6472]">メモアプリ</h1>
 
-    <!-- ログアウトボタン（POST専用） -->
-    <form method="POST" action="/logout" style="display:inline;">
-        <button type="submit">ログアウト</button>
-    </form>
+      <div class="flex items-center gap-2">
+        <!-- 新規登録 -->
+        <a
+          href="{{ url_for('regist') }}"
+          class="inline-flex items-center rounded-lg bg-[#5E6472] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#4d5360] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2"
+        >
+          新規登録
+        </a>
 
-    <a href="{{ url_for('regist') }}" role="button">新規登録</a>
+        <!-- ログアウトボタン（POST専用） -->
+        <form method="POST" action="/logout">
+          <button
+            type="submit"
+            class="inline-flex items-center rounded-lg border border-[#5E6472]/40 bg-white px-4 py-2 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#AED9E0]/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2"
+          >
+            ログアウト
+          </button>
+        </form>
+      </div>
+    </div>
 
+    <!-- Content -->
     {% if memo_list == [] %}
-        <p>メモは登録されていません</p>
+      <div class="rounded-2xl border border-dashed border-[#AED9E0] bg-white p-10 text-center shadow-sm">
+        <p class="text-sm text-gray-600">メモは登録されていません</p>
+        <div class="mt-4">
+          <a
+            href="{{ url_for('regist') }}"
+            class="inline-flex items-center rounded-lg bg-[#5E6472] px-4 py-2 text-sm font-medium text-white hover:bg-[#4d5360] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2"
+          >
+            最初のメモを作成
+          </a>
+        </div>
+      </div>
     {% else %}
-        <table border="1">
-            <tr>
-                <th>タイトル</th>  <!-- 「タイトル」ヘッダーセル -->
-                <th>メモ</th>  <!-- 「メモ」ヘッダーセル -->
-                <th></th>  <!-- 空のヘッダーセル（編集ボタン・削除ボタン用） -->
-            </tr>
-            {% for memo in memo_list %}
-                <tr>
-                    <td>{{memo.title}}</td>  <!-- 個別のタイトル -->
-                    <td>{{memo.body}}</td>  <!-- 個別のメモ -->
-                    <td>
-                        <a href="{{ url_for('edit', id=memo.id) }}" role="button">編集</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
-                        <a href="{{ url_for('delete', id=memo.id) }}" role="button">削除</a>  <!-- memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+      <div class="overflow-hidden rounded-2xl border border-[#AED9E0] bg-white shadow-sm">
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-[#AED9E0]/60">
+              <tr>
+                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#5E6472]">
+                  タイトル
+                </th>  <!-- ▲　「タイトル」ヘッダーセル -->
+                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#5E6472]">
+                  メモ
+                </th>  <!-- ▲　「メモ」ヘッダーセル -->
+                <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[#5E6472]">
+                  操作
+                </th>  <!-- ▲　空のヘッダーセル（編集ボタン・削除ボタン用） -->
+              </tr>
+            </thead>
 
+            <tbody class="divide-y divide-gray-200 bg-white">
+              {% for memo in memo_list %}
+                <tr class="hover:bg-[#AED9E0]/30">
+                  <td class="w-56 px-4 py-3 align-top">
+                    <div class="text-sm font-semibold text-gray-900">
+                      {{memo.title}}
+                    </div>
+                  </td>  <!-- ▲　個別のタイトル -->
+
+                  <td class="px-4 py-3 align-top">
+                    <div class="text-sm text-gray-700 leading-relaxed line-clamp-2">
+                      {{memo.body}}
+                    </div>
+                  </td>  <!-- ▲　個別のメモ本文 -->
+
+                  <td class="px-4 py-3 align-top">
+                    <div class="flex justify-end gap-2">
+                      <!-- ▼　memoのidを含む編集画面へのリンクを仕込んだ「編集」ボタンを設置 -->
+                      <a
+                        href="{{ url_for('edit', id=memo.id) }}"
+                        class="inline-flex items-center rounded-lg bg-[#B8F2E6] px-3 py-1.5 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#9de9d9] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8F2E6] focus-visible:ring-offset-2"
+                      >
+                        編集
+                      </a>
+
+                      <!-- ▼　memoのidを含む削除画面へのリンクを仕込んだ「削除」ボタンを設置 -->
+                      <a
+                        href="{{ url_for('delete', id=memo.id) }}"
+                        class="inline-flex items-center rounded-lg bg-[#FFA69E] px-3 py-1.5 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#f5948a] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFA69E] focus-visible:ring-offset-2"
+                      >
+                        削除
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Footer hint -->
+        <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3">
+          <p class="text-xs text-gray-500">
+            一覧は横スクロールできます（スマホ表示の場合）
+          </p>
+        </div>
+      </div>
     {% endif %}
+  </div>
+</div>
+
 {% endblock %}

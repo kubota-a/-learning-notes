@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ボタン配色プレビュー - パターン1〜3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 指定パレット: #FFA69E #FAF3DD #B8F2E6 #AED9E0 #5E6472 */
+    .palette-slate { background-color: #5E6472; }
+    .palette-slate:hover { background-color: #4d5360; }
+    .palette-coral { background-color: #FFA69E; }
+    .palette-coral:hover { background-color: #f5948a; }
+    .palette-cream { background-color: #FAF3DD; }
+    .palette-mint { background-color: #B8F2E6; }
+    .palette-mint:hover { background-color: #9de9d9; }
+    .palette-blue { background-color: #AED9E0; }
+    .palette-blue:hover { background-color: #96c9d2; }
+    .text-on-slate { color: #fff; }
+    .text-on-pastel { color: #5E6472; }
+  </style>
+</head>
+<body class="bg-[#FAF3DD]">
+  <div class="mx-auto max-w-6xl px-4 py-8">
+    <h1 class="mb-8 text-center text-xl font-semibold text-[#5E6472]">
+      指定パレット配色プレビュー（パターン1〜3）
+    </h1>
+    <p class="mb-8 text-center text-sm text-[#5E6472]/80">
+      パレット: #FFA69E（コーラル） / #FAF3DD（クリーム） / #B8F2E6（ミント） / #AED9E0（ブルー） / #5E6472（スレート）
+    </p>
+
+    <!-- ========== パターン1: クリーム基調 ========== -->
+    <section class="mb-12">
+      <h2 class="mb-4 text-lg font-semibold text-[#5E6472]">パターン1：クリーム基調</h2>
+      <div class="rounded-2xl border border-[#AED9E0]/50 bg-[#FAF3DD] p-6 shadow-sm">
+        <div class="mb-6 flex flex-wrap items-center gap-2">
+          <a href="#" class="palette-slate inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-on-slate shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">新規登録</a>
+          <button type="button" class="inline-flex items-center rounded-lg border border-[#5E6472]/40 bg-white px-4 py-2 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#FAF3DD] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">ログアウト</button>
+        </div>
+        <div class="overflow-hidden rounded-xl border border-[#AED9E0]/40 bg-white">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-[#FAF3DD]">
+              <tr>
+                <th class="px-4 py-2 text-left text-xs font-semibold uppercase text-[#5E6472]">タイトル</th>
+                <th class="px-4 py-2 text-left text-xs font-semibold uppercase text-[#5E6472]">メモ</th>
+                <th class="px-4 py-2 text-right text-xs font-semibold uppercase text-[#5E6472]">操作</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr class="hover:bg-[#FAF3DD]/50">
+                <td class="px-4 py-3 text-sm font-semibold text-gray-900">サンプルメモ</td>
+                <td class="px-4 py-3 text-sm text-gray-700">内容のプレビューです。</td>
+                <td class="px-4 py-3">
+                  <div class="flex justify-end gap-2">
+                    <a href="#" class="palette-blue inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium text-on-pastel shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#AED9E0] focus-visible:ring-offset-2">編集</a>
+                    <a href="#" class="palette-coral inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium text-on-pastel shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFA69E] focus-visible:ring-offset-2">削除</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== パターン2: ミント基調 ========== -->
+    <section class="mb-12">
+      <h2 class="mb-4 text-lg font-semibold text-[#5E6472]">パターン2：ミント基調</h2>
+      <div class="rounded-2xl border border-[#B8F2E6] bg-[#B8F2E6]/40 p-6 shadow-sm">
+        <div class="mb-6 flex flex-wrap items-center gap-2">
+          <a href="#" class="palette-slate inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-on-slate shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">新規登録</a>
+          <button type="button" class="inline-flex items-center rounded-lg border border-[#5E6472]/40 bg-white px-4 py-2 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#B8F2E6]/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">ログアウト</button>
+        </div>
+        <div class="overflow-hidden rounded-xl border border-[#B8F2E6] bg-white">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-[#B8F2E6]/60">
+              <tr>
+                <th class="px-4 py-2 text-left text-xs font-semibold uppercase text-[#5E6472]">タイトル</th>
+                <th class="px-4 py-2 text-left text-xs font-semibold uppercase text-[#5E6472]">メモ</th>
+                <th class="px-4 py-2 text-right text-xs font-semibold uppercase text-[#5E6472]">操作</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr class="hover:bg-[#B8F2E6]/30">
+                <td class="px-4 py-3 text-sm font-semibold text-gray-900">サンプルメモ</td>
+                <td class="px-4 py-3 text-sm text-gray-700">内容のプレビューです。</td>
+                <td class="px-4 py-3">
+                  <div class="flex justify-end gap-2">
+                    <a href="#" class="palette-blue inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium text-on-pastel shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#AED9E0] focus-visible:ring-offset-2">編集</a>
+                    <a href="#" class="palette-coral inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium text-on-pastel shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFA69E] focus-visible:ring-offset-2">削除</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== パターン3: パステルブルー基調 ========== -->
+    <section class="mb-12">
+      <h2 class="mb-4 text-lg font-semibold text-[#5E6472]">パターン3：パステルブルー基調</h2>
+      <div class="rounded-2xl border border-[#AED9E0] bg-[#AED9E0]/40 p-6 shadow-sm">
+        <div class="mb-6 flex flex-wrap items-center gap-2">
+          <a href="#" class="palette-slate inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-on-slate shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">新規登録</a>
+          <button type="button" class="inline-flex items-center rounded-lg border border-[#5E6472]/40 bg-white px-4 py-2 text-sm font-medium text-[#5E6472] shadow-sm hover:bg-[#AED9E0]/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5E6472] focus-visible:ring-offset-2">ログアウト</button>
+        </div>
+        <div class="overflow-hidden rounded-xl border border-[#AED9E0] bg-white">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-[#AED9E0]/60">
+              <tr>
+                <th class="px-4 py-2 text-left text-xs font-semibold uppercase text-[#5E6472]">タイトル</th>
+                <th class="px-4 py-2 text-left text-xs font-semibold uppercase text-[#5E6472]">メモ</th>
+                <th class="px-4 py-2 text-right text-xs font-semibold uppercase text-[#5E6472]">操作</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr class="hover:bg-[#AED9E0]/30">
+                <td class="px-4 py-3 text-sm font-semibold text-gray-900">サンプルメモ</td>
+                <td class="px-4 py-3 text-sm text-gray-700">内容のプレビューです。</td>
+                <td class="px-4 py-3">
+                  <div class="flex justify-end gap-2">
+                    <a href="#" class="palette-mint inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium text-on-pastel shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8F2E6] focus-visible:ring-offset-2">編集</a>
+                    <a href="#" class="palette-coral inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium text-on-pastel shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFA69E] focus-visible:ring-offset-2">削除</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <p class="text-center text-sm text-[#5E6472]/70">
+      指定の5色パレットで統一。ホバーで色の変化も確認できます。
+    </p>
+  </div>
+</body>
+</html>
